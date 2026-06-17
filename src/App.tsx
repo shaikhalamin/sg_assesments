@@ -1,93 +1,27 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import logoSrc from '../supporting_files/REMOTE RECRUIT sign color background blue.svg'
-import globalBoardSrc from '../supporting_files/Group 136@3x.svg'
-import membershipSrc from '../supporting_files/Group 136@3x-1.svg'
-import profileSrc from '../supporting_files/Group 136-1.png'
+import brandNameSrc from './screens_svg/brand_name.svg'
+import headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'
+import globalReachArtSrc from './screens_svg/02_global_reach/global_reach_full_node.svg'
+import globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'
+import freeForeverArtSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'
+import freeForeverVisualSrc from './screens_svg/03_member_ship_free_for_ever/your_member_ship_tier_left.svg'
+import customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'
+import bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'
+import readyArtSrc from './screens_svg/05_are_you_readyy/are_you_ready_help_is_only_a_few_clicks_away_full_node.svg'
+import questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'
+import freePlanArtSrc from './screens_svg/07_help/help_left_side_node.svg'
+import premiumPlanArtSrc from './screens_svg/07_help/help_right_side_node.svg'
+import footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'
 import './App.css'
 
-type Feature = {
-  eyebrow: string
-  title: string
-  body: string
-  image: string
-  alt: string
-  reverse?: boolean
-}
-
-type PricingPlan = {
-  name: string
-  tier: string
-  price: string
-  cadence: string
-  features: string[]
-  featured?: boolean
-}
-
-const features: Feature[] = [
-  {
-    eyebrow: 'Global Reach',
-    title: 'The First Fully Global Job Board, Anywhere, Ever',
-    body:
-      "RemoteRecruit connects candidates with opportunities around the world. With today's remote-first workforce, you need to be able to find the best jobs and the best people for them, wherever they may be.",
-    image: globalBoardSrc,
-    alt: 'RemoteRecruit job board preview with candidate recommendation cards',
-  },
-  {
-    eyebrow: 'Actually Fee Free',
-    title: 'Fee-Free Forever',
-    body:
-      'We do not charge you fees and we do not put up paywalls. We are the bridge that connects job opportunities with the best candidates, with no middleman involved.',
-    image: membershipSrc,
-    alt: 'RemoteRecruit premium membership card showing included placement benefits',
-    reverse: true,
-  },
-  {
-    eyebrow: 'Custom Profile',
-    title: 'Showcase Your Talents',
-    body:
-      'Personalize your profile with everything that makes you unique. Add an introductory video and other media for a personal touch that stands out to employers and candidates.',
-    image: profileSrc,
-    alt: 'RemoteRecruit profile preview with candidate feedback and skill tags',
-  },
+const socialLinks = [
+  { label: 'Facebook', className: 'footer-social-hit footer-social-hit--facebook' },
+  { label: 'Instagram', className: 'footer-social-hit footer-social-hit--instagram' },
+  { label: 'X', className: 'footer-social-hit footer-social-hit--x' },
+  { label: 'Twitter', className: 'footer-social-hit footer-social-hit--twitter' },
+  { label: 'LinkedIn', className: 'footer-social-hit footer-social-hit--linkedin' },
+  { label: 'Snapchat', className: 'footer-social-hit footer-social-hit--snapchat' },
 ]
-
-const faqs = [
-  {
-    question: 'Do I have to sign a long-term contract?',
-    answer:
-      "Actually beard single-origin coffee, twee 90's PBR Echo Park sartorial try-hard freegan Portland ennui. Selvage jean shorts 90's, Vice American Apparel try-hard food truck Shoreditch fap lomo Wes Anderson. Art party",
-  },
-  {
-    question: 'Can I pay for a whole year?',
-    answer:
-      "Actually beard single-origin coffee, twee 90's PBR Echo Park sartorial try-hard freegan Portland ennui. Selvage",
-  },
-  {
-    question: 'What if I need help?',
-    answer:
-      "Actually beard single-origin coffee, twee 90's PBR Echo Park sartorial try-hard freegan Portland ennui. Selvage jean shorts 90's, Vice American Apparel try-hard food truck Shoreditch fap lomo Wes Anderson. Art party",
-  },
-]
-
-const pricingPlans: PricingPlan[] = [
-  {
-    name: 'Free',
-    tier: 'Basic',
-    price: '$0',
-    cadence: 'Forever',
-    features: ['1 Active Job', 'Basic List Placement', 'Unlimited Job Applicants', 'Invite Anyone to Apply to Your Jobs'],
-  },
-  {
-    name: 'Premium',
-    tier: 'Premium',
-    price: '$79.99',
-    cadence: 'Per Month',
-    features: ['Unlimited Job Posts', 'Instant Job Post Approval', 'Premium List Placement', 'Unlimited Job Applicants'],
-    featured: true,
-  },
-]
-
-const socialLinks = ['f', 'ig', 'x', 'in', 'm']
 
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -101,7 +35,7 @@ function Button({
   ariaLabel,
 }: {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'ghost'
   className?: string
   onClick?: () => void
   ariaLabel?: string
@@ -118,10 +52,6 @@ function Button({
   )
 }
 
-function Pill({ children }: { children: ReactNode }) {
-  return <span className="pill">{children}</span>
-}
-
 function SectionReveal({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <div className={`section-reveal ${className}`.trim()} data-reveal>
@@ -134,17 +64,15 @@ function Header() {
   return (
     <header className="site-header" aria-label="RemoteRecruit navigation">
       <a className="brand-link" href="#page-top" onClick={(event) => event.preventDefault()} aria-label="RemoteRecruit">
-        <img src={logoSrc} width="42" height="35" alt="" />
-        <span>
-          <strong>Remote</strong>
-          <strong>Recruit</strong>
-        </span>
+        <img className="brand-art" src={brandNameSrc} width="124" height="50" alt="" />
       </a>
       <nav className="header-actions" aria-label="Account actions">
-        <Button variant="ghost" onClick={() => scrollToId('page-top')}>
+        <Button variant="ghost" className="header-sign-in" onClick={() => scrollToId('page-top')}>
           Sign in
         </Button>
-        <Button onClick={() => scrollToId('pricing')}>Sign up</Button>
+        <Button className="header-sign-up" onClick={() => scrollToId('pricing')}>
+          Sign up
+        </Button>
       </nav>
     </header>
   )
@@ -152,105 +80,176 @@ function Header() {
 
 function HeroSection() {
   return (
-    <section className="hero-section" id="page-top" aria-labelledby="hero-title">
-      <div className="hero-background" aria-hidden="true" />
+    <section className="figma-hero" id="page-top" aria-labelledby="hero-title">
+      <img className="figma-hero__background" src={headerBackgroundSrc} alt="" aria-hidden="true" decoding="sync" />
       <Header />
       <div className="hero-copy">
         <h1 id="hero-title">RemoteRecruit&apos;s Difference</h1>
-        <p>
+        <p className="hero-subtitle">
           RemoteRecruit is connecting the world with an easy-to-use platform that lets full-time,
           part-time, and freelance workers showcase their talents to businesses that need them.
           With no paywalls, no fees, and no barriers, there is nothing but you, your talents, and
           the next step in your career.
         </p>
       </div>
-      <div className="hero-wave" aria-hidden="true">
-        <svg viewBox="0 0 1440 260" preserveAspectRatio="none" focusable="false">
-          <path d="M0 64C160 196 354 207 548 118C729 35 850 5 1048 44C1198 74 1324 144 1440 212V260H0V64Z" />
-        </svg>
-      </div>
     </section>
   )
 }
 
-function FeatureSection({ feature }: { feature: Feature }) {
+function FigmaSection({
+  id,
+  title,
+  description,
+  image,
+  className,
+  mobileEyebrow,
+  mobileVisual,
+  mobileReverse = false,
+}: {
+  id: string
+  title: string
+  description: string
+  image: string
+  className: string
+  mobileEyebrow?: string
+  mobileVisual?: string
+  mobileReverse?: boolean
+}) {
   return (
-    <SectionReveal className={`feature-row ${feature.reverse ? 'feature-row--reverse' : ''}`}>
-      <article className="feature-copy">
-        <Pill>{feature.eyebrow}</Pill>
-        <h2>{feature.title}</h2>
-        <p>{feature.body}</p>
-      </article>
-      <div className="feature-visual">
-        <span className="decorative-dot decorative-dot--top" aria-hidden="true" />
-        <img src={feature.image} alt={feature.alt} loading="lazy" decoding="async" />
-      </div>
-    </SectionReveal>
+    <section className={`figma-section ${className}`} aria-labelledby={id}>
+      <SectionReveal className="figma-section__frame">
+        <img className="figma-section__art" src={image} alt="" aria-hidden="true" loading="eager" decoding="sync" />
+        <div className="visually-hidden">
+          <h2 id={id}>{title}</h2>
+          <p>{description}</p>
+        </div>
+      </SectionReveal>
+      {mobileVisual ? (
+        <div className={`mobile-feature ${mobileReverse ? 'mobile-feature--reverse' : ''}`}>
+          <article className="mobile-feature__copy">
+            {mobileEyebrow ? <span>{mobileEyebrow}</span> : null}
+            <h2>{title}</h2>
+            <p>{description}</p>
+          </article>
+          <div className="mobile-feature__visual">
+            <img src={mobileVisual} alt="" aria-hidden="true" loading="eager" decoding="sync" />
+          </div>
+        </div>
+      ) : null}
+    </section>
   )
 }
 
-function HelpCtaSection() {
+function GlobalReachSection() {
   return (
-    <section className="help-section" aria-labelledby="help-title">
-      <SectionReveal className="help-layout">
-        <div className="help-preview" aria-hidden="true">
-          <img src={globalBoardSrc} alt="" loading="lazy" decoding="async" />
+    <FigmaSection
+      id="global-reach-title"
+      title="The First Fully Global Job Board, Anywhere, Ever"
+      description="RemoteRecruit connects candidates with opportunities around the world. With today's remote-first workforce, you need to be able to find the best jobs and the best people for them, wherever they may be."
+      image={globalReachArtSrc}
+      className="figma-section--global"
+      mobileEyebrow="Global Reach"
+      mobileVisual={globalReachVisualSrc}
+    />
+  )
+}
+
+function FreeForeverSection() {
+  return (
+    <FigmaSection
+      id="free-forever-title"
+      title="Fee-Free Forever"
+      description="We do not charge you fees and we do not put up paywalls. We are the bridge that connects job opportunities with the best candidates, with no middleman involved."
+      image={freeForeverArtSrc}
+      className="figma-section--free"
+      mobileEyebrow="Actually Fee Free"
+      mobileVisual={freeForeverVisualSrc}
+      mobileReverse
+    />
+  )
+}
+
+function CustomProfileSection() {
+  return (
+    <section className="custom-profile-section" aria-labelledby="custom-profile-title">
+      <SectionReveal className="custom-profile-section__inner">
+        <div className="custom-profile-section__copy">
+          <img src={customProfileCopySrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
         </div>
-        <div className="help-copy">
-          <span className="help-kicker">Are you ready?</span>
-          <h2 id="help-title">Help is only a few clicks away!</h2>
-          <p>Click Below to get set up super quickly and find help now!</p>
-          <Button onClick={() => scrollToId('pricing')} className="button--with-arrow">
-            <span aria-hidden="true">-&gt;</span>
-            Get Started
-          </Button>
+        <article className="custom-profile-section__mobile-copy">
+          <span>Custom Profile</span>
+          <h2>Showcase Your Talents</h2>
+          <p>
+            Personalize your profile with everything that makes you unique. Add an introductory
+            video and other media for a personal touch that stands out to employers and candidates.
+          </p>
+        </article>
+        <div className="custom-profile-section__visual">
+          <img src={bestDeveloperArtSrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
+        </div>
+        <div className="visually-hidden">
+          <h2 id="custom-profile-title">Showcase Your Talents</h2>
+          <p>
+            Personalize your profile with everything that makes you unique. Add an introductory
+            video and other media for a personal touch that stands out to employers and candidates.
+          </p>
         </div>
       </SectionReveal>
     </section>
   )
 }
 
-function FaqSection() {
+function ReadySection() {
   return (
-    <section className="faq-section" id="faq" aria-labelledby="faq-title">
-      <SectionReveal className="faq-inner">
-        <h2 id="faq-title">Common Questions</h2>
-        <div className="faq-list">
-          {faqs.map((item) => (
-            <article className="faq-item" key={item.question}>
-              <h3>{item.question}</h3>
-              <p>{item.answer}</p>
-            </article>
-          ))}
+    <section className="figma-section figma-section--ready ready-section" aria-labelledby="ready-title">
+      <SectionReveal className="figma-section__frame">
+        <img className="figma-section__art" src={readyArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <button
+          type="button"
+          className="art-hit-area ready-section__action"
+          onClick={() => scrollToId('pricing')}
+          aria-label="Get started"
+        />
+        <div className="visually-hidden">
+          <p>Are you ready?</p>
+          <h2 id="ready-title">Help is only a few clicks away!</h2>
+          <p>Click below to get set up super quickly and find help now.</p>
         </div>
-        <Button variant="secondary" onClick={() => scrollToId('faq')}>
-          More Questions
-        </Button>
       </SectionReveal>
     </section>
   )
 }
 
-function PricingCard({ plan }: { plan: PricingPlan }) {
+function QuestionsSection() {
   return (
-    <article className={`pricing-card ${plan.featured ? 'pricing-card--featured' : ''}`}>
-      <div className="pricing-heading">
-        <span className="pricing-name">{plan.name}</span>
-        <span className="pricing-tier">{plan.tier}</span>
-      </div>
-      <div className="pricing-body">
-        <p className="pricing-price">{plan.price}</p>
-        <p className="pricing-cadence">{plan.cadence}</p>
-        <ul>
-          {plan.features.map((feature) => (
-            <li key={feature}>{feature}</li>
-          ))}
-        </ul>
-      </div>
-      <Button variant={plan.featured ? 'primary' : 'secondary'} onClick={() => scrollToId('pricing')}>
-        Get Started
-      </Button>
-    </article>
+    <section className="figma-section figma-section--questions questions-section" id="faq" aria-labelledby="questions-title">
+      <SectionReveal className="figma-section__frame">
+        <img className="figma-section__art" src={questionsArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <button
+          type="button"
+          className="art-hit-area questions-section__action"
+          onClick={() => scrollToId('faq')}
+          aria-label="More questions"
+        />
+        <div className="visually-hidden">
+          <h2 id="questions-title">Common Questions</h2>
+          <h3>Do I have to sign a long-term contract?</h3>
+          <p>
+            Actually beard single-origin coffee, twee 90&apos;s PBR Echo Park sartorial try-hard
+            freegan Portland ennui. Selvage jean shorts 90&apos;s, Vice American Apparel try-hard
+            food truck Shoreditch fap lomo Wes Anderson. Art party.
+          </p>
+          <h3>Can I pay for a whole year?</h3>
+          <p>Actually beard single-origin coffee, twee 90&apos;s PBR Echo Park sartorial try-hard freegan Portland ennui.</p>
+          <h3>What if I need help?</h3>
+          <p>
+            Actually beard single-origin coffee, twee 90&apos;s PBR Echo Park sartorial try-hard
+            freegan Portland ennui. Selvage jean shorts 90&apos;s, Vice American Apparel try-hard
+            food truck Shoreditch fap lomo Wes Anderson. Art party.
+          </p>
+        </div>
+      </SectionReveal>
+    </section>
   )
 }
 
@@ -259,10 +258,23 @@ function PricingSection() {
     <section className="pricing-section" id="pricing" aria-labelledby="pricing-title">
       <SectionReveal className="pricing-inner">
         <h2 id="pricing-title">Help Is One Click Away</h2>
-        <div className="pricing-grid">
-          {pricingPlans.map((plan) => (
-            <PricingCard key={plan.name} plan={plan} />
-          ))}
+        <div className="pricing-art-grid">
+          <button
+            type="button"
+            className="pricing-art-card pricing-art-card--free"
+            onClick={() => scrollToId('pricing')}
+            aria-label="Get started with the Free basic plan"
+          >
+            <img src={freePlanArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          </button>
+          <button
+            type="button"
+            className="pricing-art-card pricing-art-card--premium"
+            onClick={() => scrollToId('pricing')}
+            aria-label="Get started with the Premium plan"
+          >
+            <img src={premiumPlanArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          </button>
         </div>
       </SectionReveal>
     </section>
@@ -271,29 +283,18 @@ function PricingSection() {
 
 function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="footer-wave" aria-hidden="true">
-        <svg viewBox="0 0 1440 170" preserveAspectRatio="none" focusable="false">
-          <path d="M0 64C212 48 334 83 516 98C732 116 824 44 1028 38C1216 32 1322 67 1440 86V170H0V64Z" />
-        </svg>
-      </div>
-      <div className="footer-inner">
-        <div className="footer-brand" aria-label="RemoteRecruit">
-          <img src={logoSrc} width="52" height="43" alt="" />
-          <span>
-            <strong>Remote</strong>
-            <strong>Recruit</strong>
-          </span>
-        </div>
-        <div className="social-links" aria-label="Social links">
-          {socialLinks.map((label) => (
-            <a href="#page-top" aria-label={`RemoteRecruit ${label}`} key={label}>
-              {label}
-            </a>
+    <footer className="figma-section figma-section--footer site-footer" aria-label="RemoteRecruit footer">
+      <div className="figma-section__frame footer-frame">
+        <img className="figma-section__art" src={footerArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <nav className="footer-social-links" aria-label="Social links">
+          {socialLinks.map((link) => (
+            <a className={link.className} href="#page-top" aria-label={`RemoteRecruit ${link.label}`} key={link.label} />
           ))}
+        </nav>
+        <div className="footer-mobile-content" aria-hidden="true">
+          <img src={brandNameSrc} width="124" height="50" alt="" />
         </div>
       </div>
-      <img className="footer-mark" src={logoSrc} alt="" aria-hidden="true" />
     </footer>
   )
 }
@@ -352,13 +353,13 @@ function App() {
     <>
       <HeroSection />
       <main>
-        <section className="features-section" aria-label="RemoteRecruit features">
-          {features.map((feature) => (
-            <FeatureSection key={feature.title} feature={feature} />
-          ))}
-        </section>
-        <HelpCtaSection />
-        <FaqSection />
+        <div className="feature-stack" aria-label="RemoteRecruit features">
+          <GlobalReachSection />
+          <FreeForeverSection />
+          <CustomProfileSection />
+        </div>
+        <ReadySection />
+        <QuestionsSection />
         <PricingSection />
       </main>
       <Footer />
