@@ -3,14 +3,10 @@ import candidateAvatarSrc from './assets/candidate-avatar-gru.png'
 import brandNameSrc from './screens_svg/brand_name.svg'
 import headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'
 import globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'
-import freeForeverArtSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'
-import freeForeverVisualSrc from './screens_svg/03_member_ship_free_for_ever/your_member_ship_tier_left.svg'
 import customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'
 import bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'
 import readyArtSrc from './screens_svg/05_are_you_readyy/are_you_ready_help_is_only_a_few_clicks_away_full_node.svg'
 import questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'
-import freePlanArtSrc from './screens_svg/07_help/help_left_side_node.svg'
-import premiumPlanArtSrc from './screens_svg/07_help/help_right_side_node.svg'
 import footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'
 import './App.css'
 
@@ -35,6 +31,58 @@ const globalReachCards = [
     role: 'Front End Wizard',
     name: 'Mel Muselphiem',
     avatarSrc: candidateAvatarSrc,
+  },
+]
+
+const membershipFeatures = [
+  'Up to 25 active job posts',
+  'Premium Placement & Visibility',
+  'Messaging anyone, unlimited',
+  'Unlimited invites',
+  'View all applicants',
+  'Unlimited invites to jobseekers',
+]
+
+type PricingFeature = {
+  label: string
+  unavailable?: boolean
+}
+
+type PricingPlan = {
+  id: 'free' | 'premium'
+  name: string
+  subtitle?: string
+  price?: string
+  cadence?: string
+  ariaLabel: string
+  features: PricingFeature[]
+}
+
+const pricingPlans: PricingPlan[] = [
+  {
+    id: 'free',
+    name: 'Free',
+    subtitle: 'Basic',
+    ariaLabel: 'Get started with the Free basic plan',
+    features: [
+      { label: '1 Active Job' },
+      { label: 'Basic List Placement' },
+      { label: 'Unlimited Job Applicants', unavailable: true },
+      { label: 'Invite Anyone to Apply to Your Jobs', unavailable: true },
+    ],
+  },
+  {
+    id: 'premium',
+    name: 'Premium',
+    price: '$79.99',
+    cadence: 'Per Month',
+    ariaLabel: 'Get started with the Premium plan',
+    features: [
+      { label: 'Unlimited Job Posts' },
+      { label: 'Instant Job Post Approval' },
+      { label: 'Premium List Placement' },
+      { label: 'Unlimited Job Applicants' },
+    ],
   },
 ]
 
@@ -111,50 +159,6 @@ function HeroSection() {
   )
 }
 
-function FigmaSection({
-  id,
-  title,
-  description,
-  image,
-  className,
-  mobileEyebrow,
-  mobileVisual,
-  mobileReverse = false,
-}: {
-  id: string
-  title: string
-  description: string
-  image: string
-  className: string
-  mobileEyebrow?: string
-  mobileVisual?: string
-  mobileReverse?: boolean
-}) {
-  return (
-    <section className={`figma-section ${className}`} aria-labelledby={id}>
-      <SectionReveal className="figma-section__frame">
-        <img className="figma-section__art" src={image} alt="" aria-hidden="true" loading="eager" decoding="sync" />
-        <div className="visually-hidden">
-          <h2 id={id}>{title}</h2>
-          <p>{description}</p>
-        </div>
-      </SectionReveal>
-      {mobileVisual ? (
-        <div className={`mobile-feature ${mobileReverse ? 'mobile-feature--reverse' : ''}`}>
-          <article className="mobile-feature__copy">
-            {mobileEyebrow ? <span>{mobileEyebrow}</span> : null}
-            <h2>{title}</h2>
-            <p>{description}</p>
-          </article>
-          <div className="mobile-feature__visual">
-            <img src={mobileVisual} alt="" aria-hidden="true" loading="eager" decoding="sync" />
-          </div>
-        </div>
-      ) : null}
-    </section>
-  )
-}
-
 function GlobalReachCard({
   className,
   role,
@@ -215,18 +219,54 @@ function GlobalReachSection() {
   )
 }
 
+function StatusIcon({ unavailable = false }: { unavailable?: boolean }) {
+  return <span className={`status-icon ${unavailable ? 'status-icon--muted' : ''}`} aria-hidden="true" />
+}
+
+function FreeForeverVisual() {
+  return (
+    <div className="free-forever-visual" aria-label="Premium membership tier">
+      <span className="free-forever-dot free-forever-dot--left" aria-hidden="true" />
+      <article className="membership-card">
+        <p className="membership-card__eyebrow">Your Membership Tier</p>
+        <h3>Premium</h3>
+        <p className="membership-card__label">FEATURES</p>
+        <ul className="membership-card__features">
+          {membershipFeatures.map((feature) => (
+            <li key={feature}>
+              <StatusIcon />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+      <aside className="payment-card" aria-label="Upcoming payment">
+        <span className="payment-card__icon" aria-hidden="true">P</span>
+        <p>
+          <span>Upcoming Payment In</span>
+          <strong>14 Days - $79.99</strong>
+        </p>
+      </aside>
+      <span className="free-forever-brand-mark" aria-hidden="true">R</span>
+    </div>
+  )
+}
+
 function FreeForeverSection() {
   return (
-    <FigmaSection
-      id="free-forever-title"
-      title="Fee-Free Forever"
-      description="We do not charge you fees and we do not put up paywalls. We are the bridge that connects job opportunities with the best candidates, with no middleman involved."
-      image={freeForeverArtSrc}
-      className="figma-section--free"
-      mobileEyebrow="Actually Fee Free"
-      mobileVisual={freeForeverVisualSrc}
-      mobileReverse
-    />
+    <section className="figma-section figma-section--free free-forever-section" aria-labelledby="free-forever-title">
+      <SectionReveal className="free-forever-section__inner">
+        <FreeForeverVisual />
+        <article className="free-forever-copy">
+          <span>Actually Fee Free</span>
+          <h2 id="free-forever-title">Fee-Free Forever</h2>
+          <p>
+            We don&apos;t charge you fees and we don&apos;t put up paywalls. We&apos;re the bridge
+            that connects job opportunities with the best candidates, with no middleman involved.
+          </p>
+        </article>
+      </SectionReveal>
+    </section>
   )
 }
 
@@ -314,28 +354,49 @@ function QuestionsSection() {
   )
 }
 
+function PricingCard({ plan }: { plan: (typeof pricingPlans)[number] }) {
+  return (
+    <article className={`pricing-card pricing-card--${plan.id}`}>
+      <div className="pricing-card__summary">
+        {plan.id === 'premium' ? <span className="pricing-card__badge">Premium</span> : null}
+        <h3>{plan.name}</h3>
+        {plan.subtitle ? <p>{plan.subtitle}</p> : null}
+        {plan.price ? (
+          <p className="pricing-card__price">
+            <strong>{plan.price}</strong>
+            <span>{plan.cadence}</span>
+          </p>
+        ) : null}
+      </div>
+      <ul className="pricing-card__features">
+        {plan.features.map((feature) => (
+          <li className={feature.unavailable ? 'is-muted' : ''} key={feature.label}>
+            <StatusIcon unavailable={feature.unavailable} />
+            <span>{feature.label}</span>
+          </li>
+        ))}
+      </ul>
+      <button
+        type="button"
+        className="pricing-card__button"
+        onClick={() => scrollToId('pricing')}
+        aria-label={plan.ariaLabel}
+      >
+        Get Started
+      </button>
+    </article>
+  )
+}
+
 function PricingSection() {
   return (
     <section className="pricing-section" id="pricing" aria-labelledby="pricing-title">
       <SectionReveal className="pricing-inner">
         <h2 id="pricing-title">Help Is One Click Away</h2>
-        <div className="pricing-art-grid">
-          <button
-            type="button"
-            className="pricing-art-card pricing-art-card--free"
-            onClick={() => scrollToId('pricing')}
-            aria-label="Get started with the Free basic plan"
-          >
-            <img src={freePlanArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-          </button>
-          <button
-            type="button"
-            className="pricing-art-card pricing-art-card--premium"
-            onClick={() => scrollToId('pricing')}
-            aria-label="Get started with the Premium plan"
-          >
-            <img src={premiumPlanArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-          </button>
+        <div className="pricing-card-grid">
+          {pricingPlans.map((plan) => (
+            <PricingCard plan={plan} key={plan.id} />
+          ))}
         </div>
       </SectionReveal>
     </section>

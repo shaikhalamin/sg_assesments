@@ -17,13 +17,10 @@ const checks = [
     pass:
       app.includes("headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'") &&
       app.includes("globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'") &&
-      app.includes("freeForeverArtSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'") &&
       app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'") &&
       app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
       app.includes("readyArtSrc from './screens_svg/05_are_you_readyy/are_you_ready_help_is_only_a_few_clicks_away_full_node.svg'") &&
       app.includes("questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'") &&
-      app.includes("freePlanArtSrc from './screens_svg/07_help/help_left_side_node.svg'") &&
-      app.includes("premiumPlanArtSrc from './screens_svg/07_help/help_right_side_node.svg'") &&
       app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'"),
   },
   {
@@ -59,14 +56,14 @@ const checks = [
       css.includes('object-fit: fill;'),
   },
   {
-    name: 'feature stack uses Figma full/split section art wrappers',
+    name: 'feature stack uses Figma art wrappers plus live copyable feature sections',
     pass:
-      app.includes('function FigmaSection') &&
       app.includes('figma-section--global') &&
       app.includes('function GlobalReachSection()') &&
       app.includes('src={globalReachVisualSrc}') &&
-      app.includes('className="figma-section--free"') &&
-      app.includes('image={freeForeverArtSrc}') &&
+      app.includes('function FreeForeverSection()') &&
+      app.includes('function FreeForeverVisual()') &&
+      app.includes('figma-section--free free-forever-section') &&
       app.includes('className="custom-profile-section"') &&
       app.includes('src={customProfileCopySrc}') &&
       app.includes('src={bestDeveloperArtSrc}') &&
@@ -106,17 +103,45 @@ const checks = [
       css.includes('object-fit: cover;'),
   },
   {
-    name: 'cta, faq, pricing, and footer use the new Figma section assets with interactive targets',
+    name: 'free forever section renders desktop membership and right-side copy as selectable HTML',
+    pass:
+      app.includes('function FreeForeverVisual()') &&
+      app.includes('className="free-forever-copy"') &&
+      app.includes('className="membership-card"') &&
+      app.includes('className="payment-card"') &&
+      app.includes('<h2 id="free-forever-title">Fee-Free Forever</h2>') &&
+      app.includes('Your Membership Tier') &&
+      app.includes('Upcoming Payment In') &&
+      app.includes('14 Days - $79.99') &&
+      css.includes('.free-forever-copy') &&
+      css.includes('.membership-card') &&
+      css.includes('.payment-card') &&
+      css.includes('user-select: text;'),
+  },
+  {
+    name: 'pricing cards render visible selectable plan text instead of image-only card text',
+    pass:
+      app.includes('const pricingPlans') &&
+      app.includes('function PricingCard') &&
+      app.includes('pricing-card pricing-card--') &&
+      app.includes('$79.99') &&
+      app.includes('Per Month') &&
+      app.includes('Unlimited Job Posts') &&
+      app.includes('Instant Job Post Approval') &&
+      css.includes('.pricing-card') &&
+      css.includes('.pricing-card__button') &&
+      css.includes('user-select: text;'),
+  },
+  {
+    name: 'cta, faq, pricing, and footer keep interactive targets with live pricing cards',
     pass:
       app.includes('src={readyArtSrc}') &&
       app.includes('src={questionsArtSrc}') &&
-      app.includes('src={freePlanArtSrc}') &&
-      app.includes('src={premiumPlanArtSrc}') &&
       app.includes('src={footerArtSrc}') &&
       app.includes('className="art-hit-area ready-section__action"') &&
       app.includes('className="art-hit-area questions-section__action"') &&
-      app.includes('className="pricing-art-card pricing-art-card--free"') &&
-      app.includes('className="pricing-art-card pricing-art-card--premium"'),
+      app.includes('className="pricing-card-grid"') &&
+      app.includes('className="pricing-card__button"'),
   },
   {
     name: 'high-fidelity Figma sections use stable responsive image geometry',
@@ -172,10 +197,10 @@ const checks = [
     pass:
       app.includes('aria-label="Get started"') &&
       app.includes('aria-label="More questions"') &&
-      app.includes('aria-label="Get started with the Free basic plan"') &&
-      app.includes('aria-label="Get started with the Premium plan"') &&
+      app.includes("ariaLabel: 'Get started with the Free basic plan'") &&
+      app.includes("ariaLabel: 'Get started with the Premium plan'") &&
       css.includes('.art-hit-area:focus-visible') &&
-      css.includes('.pricing-art-card:focus-visible'),
+      css.includes('.pricing-card__button:focus-visible'),
   },
   {
     name: 'responsive layout keeps split art and pricing cards from overflowing mobile viewports',
