@@ -4,6 +4,12 @@ const app = readFileSync('src/App.tsx', 'utf8')
 const css = readFileSync('src/App.css', 'utf8')
 const indexCss = readFileSync('src/index.css', 'utf8')
 const headerBackgroundSvg = readFileSync('src/screens_svg/01_header/01_header_background.svg', 'utf8')
+const globalReachDesktopParagraph =
+  app.match(/<article className="global-reach-section__copy">[\s\S]*?<p>([\s\S]*?)<\/p>/)?.[1] ?? ''
+const normalizedGlobalReachDesktopParagraph = globalReachDesktopParagraph
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim()
 
 const checks = [
   {
@@ -81,6 +87,23 @@ const checks = [
       css.includes('.global-reach-section__copy') &&
       css.includes('.global-reach-card__role') &&
       css.includes('user-select: text;'),
+  },
+  {
+    name: 'global reach desktop paragraph relies on responsive wrapping instead of manual breaks',
+    pass:
+      !/<br\s*\/?>/.test(globalReachDesktopParagraph) &&
+      normalizedGlobalReachDesktopParagraph ===
+        'RemoteRecruit connects candidates with opportunities around the world. With today&apos;s remote-first workforce, you need to be able to find the best jobs and the best people for them, wherever they may be.',
+  },
+  {
+    name: 'global reach candidate cards expose left-side configurable avatar images',
+    pass:
+      app.includes('function GlobalReachCard') &&
+      app.includes('avatarSrc') &&
+      app.includes('className="global-reach-card__avatar"') &&
+      app.includes('src={avatarSrc}') &&
+      css.includes('grid-template-columns: var(--avatar-size) minmax(0, 1fr);') &&
+      css.includes('object-fit: cover;'),
   },
   {
     name: 'cta, faq, pricing, and footer use the new Figma section assets with interactive targets',

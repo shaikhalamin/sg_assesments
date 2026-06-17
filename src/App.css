@@ -289,7 +289,7 @@
   user-select: text;
 }
 
-.global-reach-section__visual img {
+.global-reach-section__visual > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -300,27 +300,50 @@
 }
 
 .global-reach-card {
+  --avatar-size: 17.35%;
   position: absolute;
   z-index: 2;
-  width: 46%;
-  min-height: 8%;
-  padding: 0 8px 0 0;
+  display: grid;
+  width: 63.43%;
+  min-height: 11.21%;
+  grid-template-columns: var(--avatar-size) minmax(0, 1fr);
+  column-gap: 2.6%;
+  align-items: center;
+  border: 1px solid #f6f4ff;
+  border-radius: 36.5px;
+  padding: 0 6% 0 2.8%;
   background: #ffffff;
   box-shadow:
-    -8px 0 0 #ffffff,
-    0 -4px 0 #ffffff,
-    0 4px 0 #ffffff;
+    0 26px 54px rgba(20, 45, 92, 0.07),
+    0 4px 16px rgba(76, 104, 180, 0.08);
   user-select: text;
 }
 
 .global-reach-card--python {
-  top: 47.35%;
-  left: 17.78%;
+  top: 44.7%;
+  left: 3.43%;
 }
 
 .global-reach-card--frontend {
-  top: 64.05%;
-  left: 33.25%;
+  top: 61.44%;
+  left: 18.92%;
+}
+
+.global-reach-card__avatar {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 3px solid #f7b728;
+  border-radius: 22%;
+  object-fit: cover;
+  object-position: 56% center;
+  box-shadow: 0 10px 18px rgba(23, 43, 78, 0.18);
+  pointer-events: none;
+  user-select: none;
+}
+
+.global-reach-card__copy {
+  min-width: 0;
 }
 
 .global-reach-card__role,
