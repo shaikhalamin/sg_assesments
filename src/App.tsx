@@ -1,7 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import brandNameSrc from './screens_svg/brand_name.svg'
 import headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'
-import globalReachArtSrc from './screens_svg/02_global_reach/global_reach_full_node.svg'
 import globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'
 import freeForeverArtSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'
 import freeForeverVisualSrc from './screens_svg/03_member_ship_free_for_ever/your_member_ship_tier_left.svg'
@@ -142,15 +141,50 @@ function FigmaSection({
 
 function GlobalReachSection() {
   return (
-    <FigmaSection
-      id="global-reach-title"
-      title="The First Fully Global Job Board, Anywhere, Ever"
-      description="RemoteRecruit connects candidates with opportunities around the world. With today's remote-first workforce, you need to be able to find the best jobs and the best people for them, wherever they may be."
-      image={globalReachArtSrc}
-      className="figma-section--global"
-      mobileEyebrow="Global Reach"
-      mobileVisual={globalReachVisualSrc}
-    />
+    <section className="figma-section figma-section--global global-reach-section" aria-labelledby="global-reach-title">
+      <SectionReveal className="figma-section__frame global-reach-section__frame">
+        <article className="global-reach-section__copy">
+          <span>Global Reach</span>
+          <h2 id="global-reach-title">The First Fully Global Job Board, Anywhere, Ever</h2>
+          <p>
+            RemoteRecruit connects candidates with
+            <br />
+            opportunities around the world. With today&apos;s
+            <br />
+            remote-first workforce, you need to be able to find
+            <br />
+            the best jobs and the best people for them,
+            <br />
+            wherever they may be.
+          </p>
+        </article>
+        <div className="global-reach-section__visual">
+          <img src={globalReachVisualSrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
+          <div className="global-reach-card global-reach-card--python">
+            <p className="global-reach-card__role">Python Developer</p>
+            <p className="global-reach-card__name">Felonious Gru</p>
+          </div>
+          <div className="global-reach-card global-reach-card--frontend">
+            <p className="global-reach-card__role">Front End Wizard</p>
+            <p className="global-reach-card__name">Mel Muselphiem</p>
+          </div>
+        </div>
+      </SectionReveal>
+      <div className="mobile-feature">
+        <article className="mobile-feature__copy">
+          <span>Global Reach</span>
+          <h2>The First Fully Global Job Board, Anywhere, Ever</h2>
+          <p>
+            RemoteRecruit connects candidates with opportunities around the world. With today&apos;s
+            remote-first workforce, you need to be able to find the best jobs and the best people
+            for them, wherever they may be.
+          </p>
+        </article>
+        <div className="mobile-feature__visual">
+          <img src={globalReachVisualSrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
+        </div>
+      </div>
+    </section>
   )
 }
 

@@ -10,7 +10,7 @@ const checks = [
     name: 'homepage imports the reorganized high-fidelity Figma section assets',
     pass:
       app.includes("headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'") &&
-      app.includes("globalReachArtSrc from './screens_svg/02_global_reach/global_reach_full_node.svg'") &&
+      app.includes("globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'") &&
       app.includes("freeForeverArtSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'") &&
       app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'") &&
       app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
@@ -56,8 +56,9 @@ const checks = [
     name: 'feature stack uses Figma full/split section art wrappers',
     pass:
       app.includes('function FigmaSection') &&
-      app.includes('className="figma-section--global"') &&
-      app.includes('image={globalReachArtSrc}') &&
+      app.includes('figma-section--global') &&
+      app.includes('function GlobalReachSection()') &&
+      app.includes('src={globalReachVisualSrc}') &&
       app.includes('className="figma-section--free"') &&
       app.includes('image={freeForeverArtSrc}') &&
       app.includes('className="custom-profile-section"') &&
@@ -65,6 +66,21 @@ const checks = [
       app.includes('src={bestDeveloperArtSrc}') &&
       css.includes('.figma-section__art') &&
       css.includes('.custom-profile-section'),
+  },
+  {
+    name: 'global reach desktop section uses live copyable HTML for visible text',
+    pass:
+      app.includes('className="global-reach-section__copy"') &&
+      app.includes('<span>Global Reach</span>') &&
+      app.includes('<h2 id="global-reach-title">The First Fully Global Job Board, Anywhere, Ever</h2>') &&
+      app.includes('className="global-reach-card__role"') &&
+      app.includes('Python Developer') &&
+      app.includes('Felonious Gru') &&
+      app.includes('Front End Wizard') &&
+      app.includes('Mel Muselphiem') &&
+      css.includes('.global-reach-section__copy') &&
+      css.includes('.global-reach-card__role') &&
+      css.includes('user-select: text;'),
   },
   {
     name: 'cta, faq, pricing, and footer use the new Figma section assets with interactive targets',

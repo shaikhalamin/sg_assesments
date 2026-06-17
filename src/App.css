@@ -176,7 +176,7 @@
 .feature-stack {
   width: min(1152px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 0;
+  padding: 44px 0 0;
 }
 
 .section-reveal {
@@ -223,6 +223,129 @@
 .figma-section--global {
   --section-width: 1152px;
   --section-ratio: 1152 / 651;
+}
+
+.global-reach-section__frame {
+  left: clamp(0px, calc((100vw - 980px) * 0.1065), 49px);
+  overflow: visible;
+}
+
+.global-reach-section__copy {
+  position: absolute;
+  top: 15.82%;
+  left: 0;
+  z-index: 2;
+  width: min(520px, 46%);
+  color: #11142d;
+  font-family: Poppins, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  user-select: text;
+}
+
+.global-reach-section__copy span {
+  display: inline-flex;
+  min-width: 127px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 20px;
+  color: rgba(17, 20, 45, 0.79668);
+  background: #c2eeff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.global-reach-section__copy h2 {
+  max-width: 520px;
+  margin: 35px 0 0;
+  color: #11142d;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.global-reach-section__copy p {
+  max-width: 440px;
+  margin: 39px 0 0;
+  color: rgba(17, 20, 45, 0.642764);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.95;
+  letter-spacing: 0;
+}
+
+.global-reach-section__visual {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 48.177%;
+  height: 100%;
+  color: #11142d;
+  font-family: Poppins, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  user-select: text;
+}
+
+.global-reach-section__visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.global-reach-card {
+  position: absolute;
+  z-index: 2;
+  width: 46%;
+  min-height: 8%;
+  padding: 0 8px 0 0;
+  background: #ffffff;
+  box-shadow:
+    -8px 0 0 #ffffff,
+    0 -4px 0 #ffffff,
+    0 4px 0 #ffffff;
+  user-select: text;
+}
+
+.global-reach-card--python {
+  top: 47.35%;
+  left: 17.78%;
+}
+
+.global-reach-card--frontend {
+  top: 64.05%;
+  left: 33.25%;
+}
+
+.global-reach-card__role,
+.global-reach-card__name {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.global-reach-card__role {
+  color: #1e3e85;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.global-reach-card--frontend .global-reach-card__role {
+  color: #52b4da;
+}
+
+.global-reach-card__name {
+  margin-top: 6px;
+  color: #11142d;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.18;
 }
 
 .figma-section--free {
