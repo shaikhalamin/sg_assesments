@@ -11,17 +11,36 @@ const normalizedGlobalReachDesktopParagraph = globalReachDesktopParagraph
   .replace(/\s+/g, ' ')
   .trim()
 
+function getCustomProfileSkillRule(index) {
+  const match = css.match(new RegExp(`\\.custom-profile-overlay__skill:nth-child\\(${index}\\)\\s*\\{([\\s\\S]*?)\\}`))
+  return match?.[1] ?? ''
+}
+
+function getPercentDeclaration(rule, property) {
+  const match = rule.match(new RegExp(`${property}:\\s*([0-9.]+)%;`))
+  return match ? Number(match[1]) : Number.NaN
+}
+
+const iosDevelopmentSkillRule = getCustomProfileSkillRule(5)
+const moreSkillsRule = getCustomProfileSkillRule(6)
+const iosDevelopmentRight =
+  getPercentDeclaration(iosDevelopmentSkillRule, 'left') +
+  getPercentDeclaration(iosDevelopmentSkillRule, 'width')
+const moreSkillsLeft = getPercentDeclaration(moreSkillsRule, 'left')
+const customProfileSkillBaseRule = css.match(/\.custom-profile-overlay__skill\s*\{([\s\S]*?)\n\}/)?.[1] ?? ''
+const customProfileFeedbackTitleRule = css.match(/\.custom-profile-overlay__feedback-title\s*\{([\s\S]*?)\n\}/)?.[1] ?? ''
+
 const checks = [
   {
     name: 'homepage imports the reorganized high-fidelity Figma section assets',
     pass:
       app.includes("headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'") &&
       app.includes("globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'") &&
-      app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'") &&
       app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
       app.includes("readyArtSrc from './screens_svg/05_are_you_readyy/are_you_ready_help_is_only_a_few_clicks_away_full_node.svg'") &&
       app.includes("questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'") &&
-      app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'"),
+      app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'") &&
+      !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'"),
   },
   {
     name: 'homepage no longer depends on earlier ad hoc feature artwork imports',
@@ -65,8 +84,9 @@ const checks = [
       app.includes('function FreeForeverVisual()') &&
       app.includes('figma-section--free free-forever-section') &&
       app.includes('className="custom-profile-section"') &&
-      app.includes('src={customProfileCopySrc}') &&
+      app.includes('className="custom-profile-copy"') &&
       app.includes('src={bestDeveloperArtSrc}') &&
+      app.includes('className="custom-profile-overlay"') &&
       css.includes('.figma-section__art') &&
       css.includes('.custom-profile-section'),
   },
@@ -155,6 +175,76 @@ const checks = [
       app.includes('src={remoteRecruitMarkSrc}') &&
       css.includes('.payment-card__logo') &&
       css.includes('.free-forever-brand-mark img'),
+  },
+  {
+    name: 'custom profile right side keeps reference SVG art with only requested editable overlays',
+    pass:
+      app.includes('const customProfileSkills') &&
+      app.includes('const customProfileFeedback') &&
+      app.includes('className="custom-profile-copy"') &&
+      app.includes('<span>Custom Profile</span>') &&
+      app.includes('<h2 id="custom-profile-title">Showcase Your Talents</h2>') &&
+      app.includes('className="custom-profile-section__visual"') &&
+      app.includes('className="custom-profile-art"') &&
+      app.includes('src={bestDeveloperArtSrc}') &&
+      app.includes('className="custom-profile-overlay"') &&
+      app.includes('className="custom-profile-overlay__feedback"') &&
+      app.includes('className="custom-profile-overlay__skill"') &&
+      app.includes('Past Client Feedback') &&
+      app.includes('Best Developer Ever!') &&
+      app.includes('customProfileSkills.map') &&
+      app.includes('Python Dev') &&
+      app.includes('Javascript') &&
+      app.includes('Front End') &&
+      app.includes('Back End') &&
+      app.includes('IOS Development') &&
+      app.includes('+12') &&
+      !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'") &&
+      !app.includes('function CustomProfileVisual') &&
+      css.includes('.custom-profile-copy') &&
+      css.includes('.custom-profile-art') &&
+      css.includes('.custom-profile-overlay') &&
+      css.includes('.custom-profile-overlay__feedback') &&
+      css.includes('.custom-profile-overlay__skill') &&
+      !css.includes('.profile-video-card') &&
+      !css.includes('.profile-floating-avatar') &&
+      css.includes('user-select: text;'),
+  },
+  {
+    name: 'custom profile overlay typography and tag boxes match the SVG artboard',
+    pass:
+      css.includes('container-type: inline-size;') &&
+      css.includes('top: 47.24916%;') &&
+      css.includes('left: 17.61712%;') &&
+      css.includes(':where(.custom-profile-overlay p),') &&
+      /\.custom-profile-overlay__feedback-eyebrow\s*\{[^}]*font-size: 2\.117117cqw;[^}]*color: #1e3e85;[^}]*font-weight: 700;/s.test(css) &&
+      /\.custom-profile-overlay__feedback-title\s*\{[^}]*color: #11142d;[^}]*font-size: 2\.927928cqw;[^}]*line-height: 1\.35;/s.test(css) &&
+      !customProfileFeedbackTitleRule.includes('font-weight:') &&
+      /\.custom-profile-overlay__feedback-title\s*\{[^}]*margin-top: 1\.42973cqw;/s.test(css) &&
+      css.includes('font-weight: 400;') &&
+      /\.custom-profile-overlay__feedback-title\s*\{[^}]*white-space: nowrap;/.test(css) &&
+      css.includes('color: #1e3e85;') &&
+      css.includes('color: #11142d;') &&
+      css.includes('background: linear-gradient(135deg, #eef5fd 0%, #f5f1ff 100%);') &&
+      !customProfileSkillBaseRule.includes('rgba(87, 153, 235, 0.1)') &&
+      !customProfileSkillBaseRule.includes('rgba(159, 116, 251, 0.1)') &&
+      css.includes('background-clip: text, border-box;') &&
+      css.includes('-webkit-background-clip: text, border-box;') &&
+      css.includes('top: 61.44393%;') &&
+      css.includes('top: 68.8172%;') &&
+      css.includes('left: 38.73874%;') &&
+      css.includes('left: 57.47748%;') &&
+      css.includes('left: 62.34234%;') &&
+      css.includes('width: 23.24324%;') &&
+      css.includes('width: 7.56757%;'),
+  },
+  {
+    name: 'custom profile skills keep +12 aligned to the compact SVG row gap',
+    pass:
+      Number.isFinite(iosDevelopmentRight) &&
+      Number.isFinite(moreSkillsLeft) &&
+      moreSkillsLeft - iosDevelopmentRight >= 2.5 &&
+      moreSkillsLeft - iosDevelopmentRight <= 3.25,
   },
   {
     name: 'pricing cards render visible selectable plan text instead of image-only card text',

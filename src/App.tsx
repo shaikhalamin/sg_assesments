@@ -4,7 +4,6 @@ import candidateAvatarSrc from './assets/candidate-avatar-gru.png'
 import brandNameSrc from './screens_svg/brand_name.svg'
 import headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'
 import globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'
-import customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'
 import bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'
 import readyArtSrc from './screens_svg/05_are_you_readyy/are_you_ready_help_is_only_a_few_clicks_away_full_node.svg'
 import questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'
@@ -43,6 +42,12 @@ const membershipFeatures = [
   'View all applicants',
   'Unlimited invites to jobseekers',
 ]
+
+const customProfileSkills = ['Python Dev', 'Javascript', 'Front End', 'Back End', 'IOS Development', '+12']
+const customProfileFeedback = {
+  eyebrow: 'Past Client Feedback',
+  title: 'Best Developer Ever!',
+}
 
 type PricingFeature = {
   label: string
@@ -292,26 +297,29 @@ function CustomProfileSection() {
   return (
     <section className="custom-profile-section" aria-labelledby="custom-profile-title">
       <SectionReveal className="custom-profile-section__inner">
-        <div className="custom-profile-section__copy">
-          <img src={customProfileCopySrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
-        </div>
-        <article className="custom-profile-section__mobile-copy">
+        <article className="custom-profile-copy">
           <span>Custom Profile</span>
-          <h2>Showcase Your Talents</h2>
+          <h2 id="custom-profile-title">Showcase Your Talents</h2>
           <p>
             Personalize your profile with everything that makes you unique. Add an introductory
             video and other media for a personal touch that stands out to employers and candidates.
           </p>
         </article>
         <div className="custom-profile-section__visual">
-          <img src={bestDeveloperArtSrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
-        </div>
-        <div className="visually-hidden">
-          <h2 id="custom-profile-title">Showcase Your Talents</h2>
-          <p>
-            Personalize your profile with everything that makes you unique. Add an introductory
-            video and other media for a personal touch that stands out to employers and candidates.
-          </p>
+          <img className="custom-profile-art" src={bestDeveloperArtSrc} alt="" aria-hidden="true" loading="eager" decoding="sync" />
+          <div className="custom-profile-overlay" aria-label="Editable profile preview text">
+            <article className="custom-profile-overlay__feedback" aria-label="Past client feedback">
+              <p className="custom-profile-overlay__feedback-eyebrow">{customProfileFeedback.eyebrow}</p>
+              <p className="custom-profile-overlay__feedback-title">{customProfileFeedback.title}</p>
+            </article>
+            <ul className="custom-profile-overlay__skills" aria-label="Profile skills">
+              {customProfileSkills.map((skill) => (
+                <li className="custom-profile-overlay__skill" key={skill}>
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </SectionReveal>
     </section>

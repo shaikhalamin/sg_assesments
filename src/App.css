@@ -215,8 +215,7 @@
   pointer-events: none;
 }
 
-.mobile-feature,
-.custom-profile-section__mobile-copy {
+.mobile-feature {
   display: none;
 }
 
@@ -747,30 +746,196 @@
   grid-template-columns: minmax(0, 500px) minmax(0, 555px);
   gap: 31px;
   align-items: center;
+  color: #11142d;
+  font-family: Poppins, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  user-select: text;
 }
 
-.custom-profile-section__copy,
+.custom-profile-copy,
 .custom-profile-section__visual {
   min-width: 0;
 }
 
-.custom-profile-section__copy img,
-.custom-profile-section__visual img {
+.custom-profile-copy {
+  width: min(500px, 100%);
+  user-select: text;
+  transform: translateY(-2px);
+}
+
+.custom-profile-copy > span {
+  display: inline-flex;
+  min-width: 130px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 20px;
+  color: rgba(17, 20, 45, 0.79668);
+  background: #c2eeff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.custom-profile-copy h2 {
+  max-width: 500px;
+  margin: 35px 0 0;
+  color: #11142d;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.custom-profile-copy p {
+  max-width: 444px;
+  margin: 39px 0 0;
+  color: rgba(17, 20, 45, 0.642764);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.95;
+  letter-spacing: 0;
+}
+
+.custom-profile-section__visual {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+  user-select: text;
+}
+
+.custom-profile-art {
   display: block;
   width: 100%;
   height: auto;
+  pointer-events: none;
+  user-select: none;
 }
 
-.mobile-feature__copy,
-.custom-profile-section__mobile-copy {
+.custom-profile-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: #11142d;
+  font-family: Poppins, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  pointer-events: none;
+  user-select: text;
+}
+
+:where(.custom-profile-overlay p),
+.custom-profile-overlay__skills {
+  margin: 0;
+  padding: 0;
+}
+
+.custom-profile-overlay__feedback {
+  position: absolute;
+  top: 47.24916%;
+  left: 17.61712%;
+  width: 30.72865%;
+  min-height: 5.6404%;
+  background: #ffffff;
+  pointer-events: auto;
+  user-select: text;
+}
+
+.custom-profile-overlay__feedback-eyebrow {
+  font-size: 11.75px;
+  font-size: 2.117117cqw;
+  color: #1e3e85;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.custom-profile-overlay__feedback-title {
+  margin-top: 1.42973cqw;
+  color: #11142d;
+  font-size: 16.25px;
+  font-size: 2.927928cqw;
+  line-height: 1.35;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.custom-profile-overlay__skills {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+}
+
+.custom-profile-overlay__skill {
+  position: absolute;
+  display: inline-flex;
+  height: 4.91551%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0;
+  color: #1e3e85;
+  background: linear-gradient(135deg, #eef5fd 0%, #f5f1ff 100%);
+  background:
+    linear-gradient(135deg, #336da6 0%, #1e3e85 100%),
+    linear-gradient(135deg, #eef5fd 0%, #f5f1ff 100%);
+  background-clip: text, border-box;
+  -webkit-background-clip: text, border-box;
+  -webkit-text-fill-color: transparent;
+  font-size: 12px;
+  font-size: 2.162162cqw;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  pointer-events: auto;
+  white-space: nowrap;
+  user-select: text;
+}
+
+.custom-profile-overlay__skill:nth-child(1) {
+  top: 61.44393%;
+  left: 19.0991%;
+  width: 16.75676%;
+}
+
+.custom-profile-overlay__skill:nth-child(2) {
+  top: 61.44393%;
+  left: 38.73874%;
+  width: 15.85586%;
+}
+
+.custom-profile-overlay__skill:nth-child(3) {
+  top: 61.44393%;
+  left: 57.47748%;
+  width: 14.59459%;
+}
+
+.custom-profile-overlay__skill:nth-child(4) {
+  top: 68.8172%;
+  left: 19.0991%;
+  width: 14.23423%;
+}
+
+.custom-profile-overlay__skill:nth-child(5) {
+  top: 68.8172%;
+  left: 36.21622%;
+  width: 23.24324%;
+}
+
+.custom-profile-overlay__skill:nth-child(6) {
+  top: 68.8172%;
+  left: 62.34234%;
+  width: 7.56757%;
+  border-radius: 999px;
+}
+
+.mobile-feature__copy {
   font-family: Poppins, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   min-width: 0;
   max-width: 100%;
   overflow-wrap: break-word;
 }
 
-.mobile-feature__copy span,
-.custom-profile-section__mobile-copy span {
+.mobile-feature__copy span {
   display: inline-flex;
   width: max-content;
   min-height: 34px;
@@ -784,8 +949,7 @@
   font-weight: 900;
 }
 
-.mobile-feature__copy h2,
-.custom-profile-section__mobile-copy h2 {
+.mobile-feature__copy h2 {
   margin: 22px 0 18px;
   color: #11142d;
   font-size: 31px;
@@ -794,8 +958,7 @@
   letter-spacing: 0;
 }
 
-.mobile-feature__copy p,
-.custom-profile-section__mobile-copy p {
+.mobile-feature__copy p {
   margin: 0;
   color: rgba(17, 20, 45, 0.642764);
   font-size: 14px;
@@ -1529,12 +1692,32 @@
     gap: 24px;
   }
 
-  .custom-profile-section__copy {
-    display: none;
+  .custom-profile-copy {
+    width: min(310px, 100%);
+    margin: 0 auto;
+    transform: none;
   }
 
-  .custom-profile-section__mobile-copy {
-    display: block;
+  .custom-profile-copy > span {
+    min-height: 34px;
+    padding: 0 16px;
+    font-size: 11px;
+    font-weight: 900;
+  }
+
+  .custom-profile-copy h2 {
+    margin: 22px 0 18px;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.16;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  .custom-profile-copy p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
   }
 
   .custom-profile-section__visual {
@@ -1566,7 +1749,7 @@
 
   .pricing-inner h2,
   .mobile-feature__copy h2,
-  .custom-profile-section__mobile-copy h2 {
+  .custom-profile-copy h2 {
     max-width: 100%;
     font-size: 24px;
     overflow-wrap: break-word;
