@@ -40,7 +40,7 @@ function FreeForeverVisual() {
         </p>
       </aside>
       <span className="free-forever-brand-mark" aria-hidden="true">
-        <img src={remoteRecruitMarkSrc} alt="" loading="lazy" decoding="async" />
+        <img src={remoteRecruitMarkSrc} width="144" height="120" alt="" loading="lazy" decoding="async" />
       </span>
     </div>
   )

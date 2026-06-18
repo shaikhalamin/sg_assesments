@@ -10,7 +10,7 @@ export default function PricingCard({ plan }: { plan: PricingPlan }) {
         {plan.id === 'premium' ? (
           <span className="pricing-card__badge">
             <span className="pricing-card__badge-icon" aria-hidden="true">
-              <img src={remoteRecruitMarkSrc} alt="" loading="lazy" decoding="async" />
+              <img src={remoteRecruitMarkSrc} width="144" height="120" alt="" loading="lazy" decoding="async" />
             </span>
             <span>Premium</span>
           </span>

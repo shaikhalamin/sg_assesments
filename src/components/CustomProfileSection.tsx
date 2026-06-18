@@ -15,7 +15,16 @@ export default function CustomProfileSection() {
           </p>
         </article>
         <div className="custom-profile-section__visual">
-          <img className="custom-profile-art" src={bestDeveloperArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img
+            className="custom-profile-art"
+            src={bestDeveloperArtSrc}
+            width="555"
+            height="651"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
           <div className="custom-profile-overlay" aria-label="Editable profile preview text">
             <article className="custom-profile-overlay__feedback" aria-label="Past client feedback">
               <p className="custom-profile-overlay__feedback-eyebrow">{customProfileFeedback.eyebrow}</p>

@@ -26,6 +26,8 @@ const app = [appEntry, componentSource]
   .replaceAll("from '../assets/", "from './assets/")
 const css = readFileSync('src/App.css', 'utf8')
 const indexCss = readFileSync('src/index.css', 'utf8')
+const hasRemoteFontImport = /@import\s+url\(["']?https:\/\/fonts\.(?:googleapis|gstatic)\.com/i.test(indexCss)
+const hasRemoteFontReference = /https:\/\/fonts\.(?:googleapis|gstatic)\.com/i.test(indexCss)
 const headerBackgroundSvg = readFileSync('src/screens_svg/01_header/01_header_background.svg', 'utf8')
 const globalReachDesktopParagraph =
   app.match(/<article className="global-reach-section__copy">[\s\S]*?<p>([\s\S]*?)<\/p>/)?.[1] ?? ''
@@ -141,11 +143,12 @@ const lazySectionImports = lazySectionNames.map(
   (name) => `const ${name} = lazy(() => import('./components/${name}'))`,
 )
 const belowFoldImageTags = [...componentSource.matchAll(/<img\b[\s\S]*?(?:\/>|>)/g)].map((match) => match[0])
+const imageTags = [...app.matchAll(/<img\b[\s\S]*?(?:\/>|>)/g)].map((match) => match[0])
 const globalReachImageTags = belowFoldImageTags.filter((tag) => tag.includes('src={globalReachVisualSrc}'))
 const readyLeftArtTag = belowFoldImageTags.find((tag) => tag.includes('src={readyLeftArtSrc}')) ?? ''
 const footerArtTag = belowFoldImageTags.find((tag) => tag.includes('src={footerArtSrc}')) ?? ''
-const eagerSectionArtTags = [...globalReachImageTags, readyLeftArtTag, footerArtTag].filter(Boolean)
-const nonCriticalBelowFoldImageTags = belowFoldImageTags.filter((tag) => !eagerSectionArtTags.includes(tag))
+const decorativeBelowFoldArtTags = [...globalReachImageTags, readyLeftArtTag, footerArtTag].filter(Boolean)
+const nonCriticalBelowFoldImageTags = belowFoldImageTags.filter((tag) => !decorativeBelowFoldArtTags.includes(tag))
 const optimizedSectionAssets = [
   { path: 'src/assets/optimized/lets_find_work_right_node.webp', maxBytes: 120_000 },
   { path: 'src/assets/optimized/lets_find_work_left.webp', maxBytes: 80_000 },
@@ -181,7 +184,15 @@ const checks = [
       !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'"),
   },
   {
-    name: 'optimized section artwork stays small enough for eager loading',
+    name: 'global stylesheet avoids render-blocking remote font imports',
+    pass: !hasRemoteFontImport && !hasRemoteFontReference,
+  },
+  {
+    name: 'image elements declare intrinsic dimensions',
+    pass: imageTags.every((tag) => /\bwidth=/.test(tag) && /\bheight=/.test(tag)),
+  },
+  {
+    name: 'optimized section artwork stays small enough for deferred loading',
     pass: optimizedSectionAssets.every(({ path, maxBytes }) => existsSync(path) && statSync(path).size <= maxBytes),
   },
   {
@@ -199,15 +210,15 @@ const checks = [
       appEntry.includes('<Suspense fallback={null}>'),
   },
   {
-    name: 'slow section background art is loaded eagerly after hydration',
+    name: 'decorative below-the-fold art avoids eager high-priority loading',
     pass:
       globalReachImageTags.length === 2 &&
-      eagerSectionArtTags.length === 4 &&
-      eagerSectionArtTags.every(
+      decorativeBelowFoldArtTags.length === 4 &&
+      decorativeBelowFoldArtTags.every(
         (tag) =>
-          tag.includes('loading="eager"') &&
+          tag.includes('loading="lazy"') &&
           tag.includes('decoding="async"') &&
-          tag.includes('fetchPriority="high"'),
+          !tag.includes('fetchPriority="high"'),
       ) &&
       appEntry.includes('className="figma-hero__background"') &&
       !/<img\b[^>]*className="figma-hero__background"[^>]*loading="lazy"/.test(appEntry),
@@ -884,7 +895,7 @@ const checks = [
   {
     name: 'desktop hero and auth typography match the reference SVG',
     pass:
-      indexCss.includes('family=Poppins:wght@400;500;600;700;900') &&
+      !hasRemoteFontReference &&
       css.includes('font-size: 53px;') &&
       css.includes('line-height: 68px;') &&
       css.includes('display: flex;') &&
@@ -959,9 +970,7 @@ const checks = [
   },
   {
     name: 'global typography baseline keeps the Figma font family available',
-    pass:
-      indexCss.includes('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap') &&
-      css.includes('font-family: Poppins, Inter, ui-sans-serif'),
+    pass: !hasRemoteFontReference && css.includes('font-family: Poppins, Inter, ui-sans-serif'),
   },
 ]
 

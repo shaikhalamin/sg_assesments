@@ -23,7 +23,16 @@ export default function ReadySection() {
         <span className="ready-section__orb ready-section__orb--lower" aria-hidden="true" />
         <span className="ready-section__sun" aria-hidden="true" />
         <span className="ready-section__dot" aria-hidden="true" />
-        <img className="ready-section__left-art" src={readyLeftArtSrc} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" />
+        <img
+          className="ready-section__left-art"
+          src={readyLeftArtSrc}
+          width="813"
+          height="573"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+        />
         <article className="ready-section__copy">
           <p className="ready-section__eyebrow">Are you ready?</p>
           <h2 id="ready-title">Help is only a few clicks away!</h2>

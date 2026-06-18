@@ -57,7 +57,15 @@ function Header() {
 function HeroSection() {
   return (
     <section className="figma-hero" id="page-top" aria-labelledby="hero-title">
-      <img className="figma-hero__background" src={headerBackgroundSrc} alt="" aria-hidden="true" decoding="sync" />
+      <img
+        className="figma-hero__background"
+        src={headerBackgroundSrc}
+        width="1440"
+        height="704"
+        alt=""
+        aria-hidden="true"
+        decoding="sync"
+      />
       <Header />
       <div className="hero-copy">
         <h1 id="hero-title">RemoteRecruit&apos;s Difference</h1>
