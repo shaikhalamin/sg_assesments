@@ -119,6 +119,44 @@ const checks = [
       css.includes('user-select: text;'),
   },
   {
+    name: 'free forever desktop and tablet render visible selectable HTML, not image-only text',
+    pass:
+      !app.includes("freeForeverFullSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'") &&
+      !app.includes('className="free-forever-section__art"') &&
+      app.includes('className="figma-section__frame free-forever-section__inner"') &&
+      app.includes('className="free-forever-section__desktop-content"') &&
+      app.includes('<h2 id="free-forever-title">Fee-Free Forever</h2>') &&
+      !app.includes('<div className="visually-hidden">\n          <h2 id="free-forever-title">Fee-Free Forever</h2>') &&
+      css.includes('.free-forever-section__desktop-content') &&
+      css.includes('.free-forever-copy {\n  position: absolute;') &&
+      css.includes('left: 53.9595%;') &&
+      css.includes('top: 22.7143%;'),
+  },
+  {
+    name: 'free forever live desktop card geometry matches the Figma artboard coordinates',
+    pass:
+      css.includes('left: 7.91897%;') &&
+      css.includes('top: 8.42857%;') &&
+      css.includes('width: 32.68877%;') &&
+      css.includes('min-height: 71.42857%;') &&
+      css.includes('left: 1.74954%;') &&
+      css.includes('top: 65.42857%;') &&
+      css.includes('width: 32.41252%;') &&
+      css.includes('left: 34.89871%;') &&
+      css.includes('top: 23.57143%;') &&
+      css.includes('width: 8.37937%;'),
+  },
+  {
+    name: 'free forever mobile fallback uses reference payment and RemoteRecruit marks',
+    pass:
+      app.includes("remoteRecruitMarkSrc from '../supporting_files/REMOTE RECRUIT sign color background blue.svg'") &&
+      app.includes('function PaypalMark()') &&
+      app.includes('className="payment-card__logo"') &&
+      app.includes('src={remoteRecruitMarkSrc}') &&
+      css.includes('.payment-card__logo') &&
+      css.includes('.free-forever-brand-mark img'),
+  },
+  {
     name: 'pricing cards render visible selectable plan text instead of image-only card text',
     pass:
       app.includes('const pricingPlans') &&
