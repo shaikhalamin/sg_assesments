@@ -1,15 +1,14 @@
-import { lazy, Suspense, useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import brandNameSrc from './screens_svg/brand_name.svg'
 import headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'
+import GlobalReachSection from './components/GlobalReachSection'
+import FreeForeverSection from './components/FreeForeverSection'
+import CustomProfileSection from './components/CustomProfileSection'
+import ReadySection from './components/ReadySection'
+import QuestionsSection from './components/QuestionsSection'
+import Footer from './components/Footer'
 import { scrollToId } from './components/navigation'
 import './App.css'
-
-const GlobalReachSection = lazy(() => import('./components/GlobalReachSection'))
-const FreeForeverSection = lazy(() => import('./components/FreeForeverSection'))
-const CustomProfileSection = lazy(() => import('./components/CustomProfileSection'))
-const ReadySection = lazy(() => import('./components/ReadySection'))
-const QuestionsSection = lazy(() => import('./components/QuestionsSection'))
-const Footer = lazy(() => import('./components/Footer'))
 
 function Button({
   children,
@@ -110,26 +109,14 @@ function App() {
       <HeroSection />
       <main>
         <div className="feature-stack" aria-label="RemoteRecruit features">
-          <Suspense fallback={null}>
-            <GlobalReachSection />
-          </Suspense>
-          <Suspense fallback={null}>
-            <FreeForeverSection />
-          </Suspense>
-          <Suspense fallback={null}>
-            <CustomProfileSection />
-          </Suspense>
+          <GlobalReachSection />
+          <FreeForeverSection />
+          <CustomProfileSection />
         </div>
-        <Suspense fallback={null}>
-          <ReadySection />
-        </Suspense>
-        <Suspense fallback={null}>
-          <QuestionsSection />
-        </Suspense>
+        <ReadySection />
+        <QuestionsSection />
       </main>
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+      <Footer />
       <ScrollToTopButton visible={showScrollTop} />
     </>
   )

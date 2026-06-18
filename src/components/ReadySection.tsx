@@ -32,6 +32,7 @@ export default function ReadySection() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
+          fetchPriority="low"
         />
         <article className="ready-section__copy">
           <p className="ready-section__eyebrow">Are you ready?</p>

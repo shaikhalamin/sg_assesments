@@ -1,10 +1,8 @@
-import { lazy, Suspense } from 'react'
 import brandNameSrc from '../screens_svg/brand_name.svg'
 import footerArtSrc from '../screens_svg/08_footer/footer_full_node.svg'
 import { pricingPlans, socialLinks, type SocialIconName } from './landingData'
+import PricingCard from './PricingCard'
 import { SectionReveal } from './shared'
-
-const PricingCard = lazy(() => import('./PricingCard'))
 
 function FooterPricingLayer() {
   return (
@@ -13,9 +11,7 @@ function FooterPricingLayer() {
         <h2 id="pricing-title">Help Is One Click Away</h2>
         <div className="pricing-card-grid">
           {pricingPlans.map((plan) => (
-            <Suspense fallback={null} key={plan.id}>
-              <PricingCard plan={plan} />
-            </Suspense>
+            <PricingCard plan={plan} key={plan.id} />
           ))}
         </div>
       </SectionReveal>
@@ -81,6 +77,7 @@ export default function Footer() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
+          fetchPriority="low"
         />
         <FooterPricingLayer />
         <nav className="footer-social-links" aria-label="Social links">

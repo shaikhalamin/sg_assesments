@@ -1,4 +1,4 @@
-import bestDeveloperArtSrc from '../screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'
+import bestDeveloperArtSrc from '../assets/optimized/best_developer_ever_right_node.webp'
 import { customProfileFeedback, customProfileSkills } from './landingData'
 import { SectionReveal } from './shared'
 
@@ -24,6 +24,7 @@ export default function CustomProfileSection() {
             aria-hidden="true"
             loading="lazy"
             decoding="async"
+            fetchPriority="low"
           />
           <div className="custom-profile-overlay" aria-label="Editable profile preview text">
             <article className="custom-profile-overlay__feedback" aria-label="Past client feedback">

@@ -145,12 +145,16 @@ const lazySectionImports = lazySectionNames.map(
 const belowFoldImageTags = [...componentSource.matchAll(/<img\b[\s\S]*?(?:\/>|>)/g)].map((match) => match[0])
 const imageTags = [...app.matchAll(/<img\b[\s\S]*?(?:\/>|>)/g)].map((match) => match[0])
 const globalReachImageTags = belowFoldImageTags.filter((tag) => tag.includes('src={globalReachVisualSrc}'))
+const bestDeveloperArtTag = belowFoldImageTags.find((tag) => tag.includes('src={bestDeveloperArtSrc}')) ?? ''
 const readyLeftArtTag = belowFoldImageTags.find((tag) => tag.includes('src={readyLeftArtSrc}')) ?? ''
 const footerArtTag = belowFoldImageTags.find((tag) => tag.includes('src={footerArtSrc}')) ?? ''
-const decorativeBelowFoldArtTags = [...globalReachImageTags, readyLeftArtTag, footerArtTag].filter(Boolean)
+const decorativeBelowFoldArtTags = [...globalReachImageTags, bestDeveloperArtTag, readyLeftArtTag, footerArtTag].filter(Boolean)
 const nonCriticalBelowFoldImageTags = belowFoldImageTags.filter((tag) => !decorativeBelowFoldArtTags.includes(tag))
 const optimizedSectionAssets = [
+  { path: 'src/assets/optimized/candidate-avatar-gru.webp', maxBytes: 25_000 },
+  { path: 'src/assets/optimized/lets_find_work_right_node_mobile.webp', maxBytes: 35_000 },
   { path: 'src/assets/optimized/lets_find_work_right_node.webp', maxBytes: 120_000 },
+  { path: 'src/assets/optimized/best_developer_ever_right_node.webp', maxBytes: 120_000 },
   { path: 'src/assets/optimized/lets_find_work_left.webp', maxBytes: 80_000 },
 ]
 
@@ -177,7 +181,8 @@ const checks = [
     pass:
       app.includes("headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'") &&
       app.includes("globalReachVisualSrc from './assets/optimized/lets_find_work_right_node.webp'") &&
-      app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
+      app.includes("globalReachVisualMobileSrc from './assets/optimized/lets_find_work_right_node_mobile.webp'") &&
+      app.includes("bestDeveloperArtSrc from './assets/optimized/best_developer_ever_right_node.webp'") &&
       app.includes("readyLeftArtSrc from './assets/optimized/lets_find_work_left.webp'") &&
       app.includes("questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'") &&
       app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'") &&
@@ -196,32 +201,46 @@ const checks = [
     pass: optimizedSectionAssets.every(({ path, maxBytes }) => existsSync(path) && statSync(path).size <= maxBytes),
   },
   {
-    name: 'below-the-fold sections live in components and are loaded with React lazy',
+    name: 'landing page renders core sections without React lazy waterfalls',
     pass:
-      lazySectionImports.every((dynamicImport) => appEntry.includes(dynamicImport)) &&
+      lazySectionImports.every((dynamicImport) => !appEntry.includes(dynamicImport)) &&
+      !/\blazy\s*\(/.test(app) &&
+      !appEntry.includes('<Suspense fallback={null}>') &&
+      !componentSource.includes('<Suspense fallback={null}>') &&
       componentFiles.some((file) => file.endsWith('GlobalReachSection.tsx')) &&
       componentFiles.some((file) => file.endsWith('FreeForeverSection.tsx')) &&
       componentFiles.some((file) => file.endsWith('CustomProfileSection.tsx')) &&
       componentFiles.some((file) => file.endsWith('ReadySection.tsx')) &&
       componentFiles.some((file) => file.endsWith('QuestionsSection.tsx')) &&
       componentFiles.some((file) => file.endsWith('Footer.tsx')) &&
-      componentFiles.some((file) => file.endsWith('PricingCard.tsx')) &&
-      componentSource.includes("const PricingCard = lazy(() => import('./PricingCard'))") &&
-      appEntry.includes('<Suspense fallback={null}>'),
+      componentFiles.some((file) => file.endsWith('PricingCard.tsx')),
   },
   {
     name: 'decorative below-the-fold art avoids eager high-priority loading',
     pass:
       globalReachImageTags.length === 2 &&
-      decorativeBelowFoldArtTags.length === 4 &&
+      decorativeBelowFoldArtTags.length === 5 &&
       decorativeBelowFoldArtTags.every(
         (tag) =>
           tag.includes('loading="lazy"') &&
           tag.includes('decoding="async"') &&
+          tag.includes('fetchPriority="low"') &&
           !tag.includes('fetchPriority="high"'),
       ) &&
       appEntry.includes('className="figma-hero__background"') &&
       !/<img\b[^>]*className="figma-hero__background"[^>]*loading="lazy"/.test(appEntry),
+  },
+  {
+    name: 'global reach art exposes responsive sources for the mobile Lighthouse viewport',
+    pass:
+      globalReachImageTags.length === 2 &&
+      globalReachImageTags.every(
+        (tag) =>
+          tag.includes('srcSet={`') &&
+          tag.includes('${globalReachVisualMobileSrc} 620w') &&
+          tag.includes('${globalReachVisualSrc} 1665w') &&
+          tag.includes('sizes="(max-width: 720px) min(100vw - 24px, 360px), 555px"'),
+      ),
   },
   {
     name: 'non-critical below-the-fold image assets keep native lazy loading',
@@ -348,6 +367,8 @@ const checks = [
       app.includes('avatarSrc') &&
       app.includes('className="global-reach-card__avatar"') &&
       app.includes('src={avatarSrc}') &&
+      app.includes("candidateAvatarSrc from './assets/optimized/candidate-avatar-gru.webp'") &&
+      !app.includes("candidateAvatarSrc from './assets/candidate-avatar-gru.png'") &&
       css.includes('grid-template-columns: var(--avatar-size) minmax(0, 1fr);') &&
       css.includes('object-fit: cover;'),
   },
@@ -508,7 +529,7 @@ const checks = [
       css.includes('.free-forever-brand-mark img'),
   },
   {
-    name: 'custom profile right side keeps reference SVG art with only requested editable overlays',
+    name: 'custom profile right side uses optimized raster art with only requested editable overlays',
     pass:
       app.includes('const customProfileSkills') &&
       app.includes('const customProfileFeedback') &&
@@ -530,6 +551,8 @@ const checks = [
       app.includes('Back End') &&
       app.includes('IOS Development') &&
       app.includes('+12') &&
+      app.includes("bestDeveloperArtSrc from './assets/optimized/best_developer_ever_right_node.webp'") &&
+      !app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
       !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'") &&
       !app.includes('function CustomProfileVisual') &&
       css.includes('.custom-profile-copy') &&

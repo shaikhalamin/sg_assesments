@@ -1,4 +1,4 @@
-import candidateAvatarSrc from '../assets/candidate-avatar-gru.png'
+import candidateAvatarSrc from '../assets/optimized/candidate-avatar-gru.webp'
 
 export const socialLinks = [
   { label: 'Facebook', icon: 'facebook', href: '#page-top', className: 'footer-social-hit footer-social-hit--facebook' },
