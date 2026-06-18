@@ -1,4 +1,4 @@
-import readyLeftArtSrc from '../screens_svg/05_are_you_readyy/lets_find_work_left.svg'
+import readyLeftArtSrc from '../assets/optimized/lets_find_work_left.webp'
 import { scrollToId } from './navigation'
 import { SectionReveal } from './shared'
 
@@ -23,7 +23,7 @@ export default function ReadySection() {
         <span className="ready-section__orb ready-section__orb--lower" aria-hidden="true" />
         <span className="ready-section__sun" aria-hidden="true" />
         <span className="ready-section__dot" aria-hidden="true" />
-        <img className="ready-section__left-art" src={readyLeftArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <img className="ready-section__left-art" src={readyLeftArtSrc} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" />
         <article className="ready-section__copy">
           <p className="ready-section__eyebrow">Are you ready?</p>
           <h2 id="ready-title">Help is only a few clicks away!</h2>

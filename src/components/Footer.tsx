@@ -72,7 +72,7 @@ export default function Footer() {
   return (
     <footer className="figma-section figma-section--footer site-footer" aria-label="RemoteRecruit footer">
       <div className="figma-section__frame footer-frame">
-        <img className="figma-section__art" src={footerArtSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <img className="figma-section__art" src={footerArtSrc} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" />
         <FooterPricingLayer />
         <nav className="footer-social-links" aria-label="Social links">
           {socialLinks.map((link) => (

@@ -1,4 +1,4 @@
-import globalReachVisualSrc from '../screens_svg/02_global_reach/lets_find_work_right_node.svg'
+import globalReachVisualSrc from '../assets/optimized/lets_find_work_right_node.webp'
 import { globalReachCards } from './landingData'
 import { SectionReveal } from './shared'
 
@@ -38,7 +38,7 @@ export default function GlobalReachSection() {
           </p>
         </article>
         <div className="global-reach-section__visual">
-          <img src={globalReachVisualSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img src={globalReachVisualSrc} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" />
           {globalReachCards.map((card) => (
             <GlobalReachCard {...card} key={card.role} />
           ))}
@@ -55,7 +55,7 @@ export default function GlobalReachSection() {
           </p>
         </article>
         <div className="mobile-feature__visual">
-          <img src={globalReachVisualSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img src={globalReachVisualSrc} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" />
         </div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 function readComponentSourceFiles(dir) {
@@ -141,6 +141,15 @@ const lazySectionImports = lazySectionNames.map(
   (name) => `const ${name} = lazy(() => import('./components/${name}'))`,
 )
 const belowFoldImageTags = [...componentSource.matchAll(/<img\b[\s\S]*?(?:\/>|>)/g)].map((match) => match[0])
+const globalReachImageTags = belowFoldImageTags.filter((tag) => tag.includes('src={globalReachVisualSrc}'))
+const readyLeftArtTag = belowFoldImageTags.find((tag) => tag.includes('src={readyLeftArtSrc}')) ?? ''
+const footerArtTag = belowFoldImageTags.find((tag) => tag.includes('src={footerArtSrc}')) ?? ''
+const eagerSectionArtTags = [...globalReachImageTags, readyLeftArtTag, footerArtTag].filter(Boolean)
+const nonCriticalBelowFoldImageTags = belowFoldImageTags.filter((tag) => !eagerSectionArtTags.includes(tag))
+const optimizedSectionAssets = [
+  { path: 'src/assets/optimized/lets_find_work_right_node.webp', maxBytes: 120_000 },
+  { path: 'src/assets/optimized/lets_find_work_left.webp', maxBytes: 80_000 },
+]
 
 function hasRequestedCustomProfileSkillTextStyles(rule) {
   return (
@@ -161,15 +170,19 @@ function hasRequestedCustomProfileSkillTextStyles(rule) {
 
 const checks = [
   {
-    name: 'homepage imports the reorganized high-fidelity Figma section assets',
+    name: 'homepage imports optimized artwork for slow section backgrounds',
     pass:
       app.includes("headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'") &&
-      app.includes("globalReachVisualSrc from './screens_svg/02_global_reach/lets_find_work_right_node.svg'") &&
+      app.includes("globalReachVisualSrc from './assets/optimized/lets_find_work_right_node.webp'") &&
       app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
-      app.includes("readyLeftArtSrc from './screens_svg/05_are_you_readyy/lets_find_work_left.svg'") &&
+      app.includes("readyLeftArtSrc from './assets/optimized/lets_find_work_left.webp'") &&
       app.includes("questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'") &&
       app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'") &&
       !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'"),
+  },
+  {
+    name: 'optimized section artwork stays small enough for eager loading',
+    pass: optimizedSectionAssets.every(({ path, maxBytes }) => existsSync(path) && statSync(path).size <= maxBytes),
   },
   {
     name: 'below-the-fold sections live in components and are loaded with React lazy',
@@ -186,12 +199,24 @@ const checks = [
       appEntry.includes('<Suspense fallback={null}>'),
   },
   {
-    name: 'below-the-fold image assets use native lazy loading',
+    name: 'slow section background art is loaded eagerly after hydration',
     pass:
-      belowFoldImageTags.length > 0 &&
-      belowFoldImageTags.every((tag) => tag.includes('loading="lazy"') && tag.includes('decoding="async"')) &&
+      globalReachImageTags.length === 2 &&
+      eagerSectionArtTags.length === 4 &&
+      eagerSectionArtTags.every(
+        (tag) =>
+          tag.includes('loading="eager"') &&
+          tag.includes('decoding="async"') &&
+          tag.includes('fetchPriority="high"'),
+      ) &&
       appEntry.includes('className="figma-hero__background"') &&
       !/<img\b[^>]*className="figma-hero__background"[^>]*loading="lazy"/.test(appEntry),
+  },
+  {
+    name: 'non-critical below-the-fold image assets keep native lazy loading',
+    pass:
+      nonCriticalBelowFoldImageTags.length > 0 &&
+      nonCriticalBelowFoldImageTags.every((tag) => tag.includes('loading="lazy"') && tag.includes('decoding="async"')),
   },
   {
     name: 'homepage no longer depends on earlier ad hoc feature artwork imports',
@@ -721,7 +746,7 @@ const checks = [
   {
     name: 'ready section renders right-side copy and CTA as selectable HTML',
     pass:
-      app.includes("readyLeftArtSrc from './screens_svg/05_are_you_readyy/lets_find_work_left.svg'") &&
+      app.includes("readyLeftArtSrc from './assets/optimized/lets_find_work_left.webp'") &&
       app.includes('function ReadyArrowIcon()') &&
       app.includes('className="ready-section__left-art"') &&
       app.includes('className="ready-section__copy"') &&
