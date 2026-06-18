@@ -1,6 +1,29 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 
-const app = readFileSync('src/App.tsx', 'utf8')
+function readComponentSourceFiles(dir) {
+  if (!existsSync(dir)) {
+    return []
+  }
+
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = join(dir, entry.name)
+
+    if (entry.isDirectory()) {
+      return readComponentSourceFiles(entryPath)
+    }
+
+    return entry.isFile() && /\.(ts|tsx)$/.test(entry.name) ? [entryPath] : []
+  })
+}
+
+const appEntry = readFileSync('src/App.tsx', 'utf8')
+const componentFiles = readComponentSourceFiles('src/components')
+const componentSource = componentFiles.map((file) => readFileSync(file, 'utf8')).join('\n')
+const app = [appEntry, componentSource]
+  .join('\n')
+  .replaceAll("from '../screens_svg/", "from './screens_svg/")
+  .replaceAll("from '../assets/", "from './assets/")
 const css = readFileSync('src/App.css', 'utf8')
 const indexCss = readFileSync('src/index.css', 'utf8')
 const headerBackgroundSvg = readFileSync('src/screens_svg/01_header/01_header_background.svg', 'utf8')
@@ -106,6 +129,18 @@ const freeForeverTitleRules = [...css.matchAll(/^(\s*)\.free-forever-copy h2\s*\
 const freeForeverTitleHasConflictingOverride = freeForeverTitleRules
   .slice(1)
   .some((rule) => /font-family|font-style|font-weight|color/.test(rule))
+const lazySectionNames = [
+  'GlobalReachSection',
+  'FreeForeverSection',
+  'CustomProfileSection',
+  'ReadySection',
+  'QuestionsSection',
+  'Footer',
+]
+const lazySectionImports = lazySectionNames.map(
+  (name) => `const ${name} = lazy(() => import('./components/${name}'))`,
+)
+const belowFoldImageTags = [...componentSource.matchAll(/<img\b[\s\S]*?(?:\/>|>)/g)].map((match) => match[0])
 
 function hasRequestedCustomProfileSkillTextStyles(rule) {
   return (
@@ -135,6 +170,28 @@ const checks = [
       app.includes("questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'") &&
       app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'") &&
       !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'"),
+  },
+  {
+    name: 'below-the-fold sections live in components and are loaded with React lazy',
+    pass:
+      lazySectionImports.every((dynamicImport) => appEntry.includes(dynamicImport)) &&
+      componentFiles.some((file) => file.endsWith('GlobalReachSection.tsx')) &&
+      componentFiles.some((file) => file.endsWith('FreeForeverSection.tsx')) &&
+      componentFiles.some((file) => file.endsWith('CustomProfileSection.tsx')) &&
+      componentFiles.some((file) => file.endsWith('ReadySection.tsx')) &&
+      componentFiles.some((file) => file.endsWith('QuestionsSection.tsx')) &&
+      componentFiles.some((file) => file.endsWith('Footer.tsx')) &&
+      componentFiles.some((file) => file.endsWith('PricingCard.tsx')) &&
+      componentSource.includes("const PricingCard = lazy(() => import('./PricingCard'))") &&
+      appEntry.includes('<Suspense fallback={null}>'),
+  },
+  {
+    name: 'below-the-fold image assets use native lazy loading',
+    pass:
+      belowFoldImageTags.length > 0 &&
+      belowFoldImageTags.every((tag) => tag.includes('loading="lazy"') && tag.includes('decoding="async"')) &&
+      appEntry.includes('className="figma-hero__background"') &&
+      !/<img\b[^>]*className="figma-hero__background"[^>]*loading="lazy"/.test(appEntry),
   },
   {
     name: 'homepage no longer depends on earlier ad hoc feature artwork imports',
@@ -407,7 +464,7 @@ const checks = [
   {
     name: 'free forever mobile fallback uses reference payment and RemoteRecruit marks',
     pass:
-      app.includes("remoteRecruitMarkSrc from '../supporting_files/REMOTE RECRUIT sign color background blue.svg'") &&
+      app.includes("remoteRecruitMarkSrc from './assets/logo_base.svg'") &&
       app.includes('function PaypalMark()') &&
       app.includes('className="payment-card__logo"') &&
       app.includes('src={remoteRecruitMarkSrc}') &&

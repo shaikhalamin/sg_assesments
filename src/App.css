@@ -206,11 +206,6 @@
     transform 560ms ease;
 }
 
-.section-reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .figma-section {
   position: relative;
   overflow: hidden;
