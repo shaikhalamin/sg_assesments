@@ -51,6 +51,7 @@ export function useSectionReveal<T extends HTMLElement>() {
   const elementRef = useRef<T | null>(null)
   const animationRef = useRef<AnimeAnimation | null>(null)
   const hasRevealedRef = useRef(false)
+  const hasCompletedRevealRef = useRef(false)
 
   useEffect(() => {
     const element = elementRef.current
@@ -70,6 +71,7 @@ export function useSectionReveal<T extends HTMLElement>() {
       }
 
       hasRevealedRef.current = true
+      hasCompletedRevealRef.current = false
       element.dataset.revealed = 'true'
       element.style.willChange = 'opacity, transform'
       animationRef.current?.cancel()
@@ -79,18 +81,25 @@ export function useSectionReveal<T extends HTMLElement>() {
         duration: 720,
         ease: 'outCubic',
         onComplete: () => {
+          hasCompletedRevealRef.current = true
           element.style.willChange = 'auto'
         },
       })
     }
 
+    const cancelAnimation = () => {
+      animationRef.current?.cancel()
+      animationRef.current = null
+
+      if (!hasCompletedRevealRef.current) {
+        hasRevealedRef.current = false
+      }
+    }
+
     if (!('IntersectionObserver' in window) || isElementInViewport(element)) {
       reveal()
 
-      return () => {
-        animationRef.current?.cancel()
-        animationRef.current = null
-      }
+      return cancelAnimation
     }
 
     const observer = new IntersectionObserver(
@@ -111,8 +120,7 @@ export function useSectionReveal<T extends HTMLElement>() {
 
     return () => {
       observer.disconnect()
-      animationRef.current?.cancel()
-      animationRef.current = null
+      cancelAnimation()
     }
   }, [])
 
