@@ -20,6 +20,7 @@ function readComponentSourceFiles(dir) {
 const appEntry = readFileSync('src/App.tsx', 'utf8')
 const mainEntry = readFileSync('src/main.tsx', 'utf8')
 const viteConfig = readFileSync('vite.config.ts', 'utf8')
+const tsconfigApp = readFileSync('tsconfig.app.json', 'utf8')
 const rootRouteSource = existsSync('src/routes/__root.tsx')
   ? readFileSync('src/routes/__root.tsx', 'utf8')
   : ''
@@ -1009,14 +1010,18 @@ const checks = [
       viteConfig.includes("target: 'react'") &&
       viteConfig.includes('autoCodeSplitting: true') &&
       viteConfig.indexOf('tanstackRouter({') < viteConfig.indexOf('react()') &&
-      mainEntry.includes("from '@tanstack/react-router'") &&
-      mainEntry.includes("from './routeTree.gen'") &&
+      /from ['"]@tanstack\/react-router['"]/.test(mainEntry) &&
+      /from ['"]\.\/routeTree\.gen['"]/.test(mainEntry) &&
       mainEntry.includes('createRouter({') &&
       mainEntry.includes('<RouterProvider router={router} />') &&
       rootRouteSource.includes('createRootRoute') &&
       rootRouteSource.includes('<Outlet />') &&
       indexRouteSource.includes("createFileRoute('/')") &&
       indexRouteSource.includes('<App />'),
+  },
+  {
+    name: 'TypeScript app config enables strict null checks for TanStack Router types',
+    pass: tsconfigApp.includes('"strictNullChecks": true'),
   },
 ]
 
