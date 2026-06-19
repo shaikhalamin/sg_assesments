@@ -1,4 +1,4 @@
-import remoteRecruitMarkSrc from '../assets/logo_base.svg'
+import remoteRecruitMarkSrc from '../assets/optimized/logo_base.webp'
 import { membershipFeatures } from './landingData'
 import { SectionReveal, StatusIcon } from './shared'
 

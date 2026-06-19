@@ -1,4 +1,4 @@
-import questionsArtSrc from '../screens_svg/06_common_questions/common_questions_node.svg'
+import questionsArtSrc from '../assets/optimized/common_questions_node.webp'
 import { commonQuestions } from './landingData'
 import { scrollToId } from './navigation'
 import { SectionReveal } from './shared'

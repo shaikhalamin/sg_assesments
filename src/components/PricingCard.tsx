@@ -1,4 +1,4 @@
-import remoteRecruitMarkSrc from '../assets/logo_base.svg'
+import remoteRecruitMarkSrc from '../assets/optimized/logo_base.webp'
 import type { PricingPlan } from './landingData'
 import { scrollToId } from './navigation'
 import { StatusIcon } from './shared'

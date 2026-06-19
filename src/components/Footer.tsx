@@ -1,5 +1,5 @@
-import brandNameSrc from '../screens_svg/brand_name.svg'
-import footerArtSrc from '../screens_svg/08_footer/footer_full_node.svg'
+import brandNameSrc from '../assets/optimized/brand_name.webp'
+import footerArtSrc from '../assets/optimized/footer_full_node.webp'
 import { pricingPlans, socialLinks, type SocialIconName } from './landingData'
 import PricingCard from './PricingCard'
 import { SectionReveal } from './shared'

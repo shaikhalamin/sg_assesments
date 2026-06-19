@@ -22,13 +22,11 @@ const componentFiles = readComponentSourceFiles('src/components')
 const componentSource = componentFiles.map((file) => readFileSync(file, 'utf8')).join('\n')
 const app = [appEntry, componentSource]
   .join('\n')
-  .replaceAll("from '../screens_svg/", "from './screens_svg/")
   .replaceAll("from '../assets/", "from './assets/")
 const css = readFileSync('src/App.css', 'utf8')
 const indexCss = readFileSync('src/index.css', 'utf8')
 const hasRemoteFontImport = /@import\s+url\(["']?https:\/\/fonts\.(?:googleapis|gstatic)\.com/i.test(indexCss)
 const hasRemoteFontReference = /https:\/\/fonts\.(?:googleapis|gstatic)\.com/i.test(indexCss)
-const headerBackgroundSvg = readFileSync('src/screens_svg/01_header/01_header_background.svg', 'utf8')
 const globalReachDesktopParagraph =
   app.match(/<article className="global-reach-section__copy">[\s\S]*?<p>([\s\S]*?)<\/p>/)?.[1] ?? ''
 const normalizedGlobalReachDesktopParagraph = globalReachDesktopParagraph
@@ -148,6 +146,7 @@ const globalReachImageTags = belowFoldImageTags.filter((tag) => tag.includes('sr
 const bestDeveloperArtTag = belowFoldImageTags.find((tag) => tag.includes('src={bestDeveloperArtSrc}')) ?? ''
 const readyLeftArtTag = belowFoldImageTags.find((tag) => tag.includes('src={readyLeftArtSrc}')) ?? ''
 const footerArtTag = belowFoldImageTags.find((tag) => tag.includes('src={footerArtSrc}')) ?? ''
+const heroBackgroundTag = imageTags.find((tag) => tag.includes('src={headerBackgroundSrc}')) ?? ''
 const decorativeBelowFoldArtTags = [...globalReachImageTags, bestDeveloperArtTag, readyLeftArtTag, footerArtTag].filter(Boolean)
 const nonCriticalBelowFoldImageTags = belowFoldImageTags.filter((tag) => !decorativeBelowFoldArtTags.includes(tag))
 const optimizedSectionAssets = [
@@ -179,14 +178,14 @@ const checks = [
   {
     name: 'homepage imports optimized artwork for slow section backgrounds',
     pass:
-      app.includes("headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'") &&
+      app.includes("headerBackgroundSrc from './assets/optimized/01_header_background.webp'") &&
       app.includes("globalReachVisualSrc from './assets/optimized/lets_find_work_right_node.webp'") &&
       app.includes("globalReachVisualMobileSrc from './assets/optimized/lets_find_work_right_node_mobile.webp'") &&
       app.includes("bestDeveloperArtSrc from './assets/optimized/best_developer_ever_right_node.webp'") &&
       app.includes("readyLeftArtSrc from './assets/optimized/lets_find_work_left.webp'") &&
-      app.includes("questionsArtSrc from './screens_svg/06_common_questions/common_questions_node.svg'") &&
-      app.includes("footerArtSrc from './screens_svg/08_footer/footer_full_node.svg'") &&
-      !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'"),
+      app.includes("questionsArtSrc from './assets/optimized/common_questions_node.webp'") &&
+      app.includes("footerArtSrc from './assets/optimized/footer_full_node.webp'") &&
+      !app.includes('customProfileCopySrc'),
   },
   {
     name: 'global stylesheet avoids render-blocking remote font imports',
@@ -251,10 +250,10 @@ const checks = [
   {
     name: 'homepage no longer depends on earlier ad hoc feature artwork imports',
     pass:
-      !app.includes("globalBoardSrc from '../supporting_files/Group 136@3x.svg'") &&
-      !app.includes("membershipSrc from '../supporting_files/Group 136@3x-1.svg'") &&
+      !app.includes('globalBoardSrc') &&
+      !app.includes('membershipSrc') &&
       !app.includes("profileSrc from '../supporting_files/Group 136-1.png'") &&
-      !app.includes("globalReachSrc from './screens_svg/global_reach.svg'"),
+      !app.includes('globalReachSrc'),
   },
   {
     name: 'hero uses background-only Figma curve art with live selectable copy and navigation overlay',
@@ -273,10 +272,10 @@ const checks = [
       css.includes('height: 704px;'),
   },
   {
-    name: 'header background SVG stretches to viewport without transparent side gutters',
+    name: 'header background art stretches to viewport without transparent side gutters',
     pass:
-      headerBackgroundSvg.includes('viewBox="0 0 1440 704"') &&
-      headerBackgroundSvg.includes('preserveAspectRatio="none"') &&
+      heroBackgroundTag.includes('width="1440"') &&
+      heroBackgroundTag.includes('height="704"') &&
       css.includes('max-width: none;') &&
       css.includes('object-fit: fill;'),
   },
@@ -391,7 +390,7 @@ const checks = [
   {
     name: 'free forever desktop and tablet render visible selectable HTML, not image-only text',
     pass:
-      !app.includes("freeForeverFullSrc from './screens_svg/03_member_ship_free_for_ever/free_for_ever_full_node.svg'") &&
+      !app.includes('freeForeverFullSrc') &&
       !app.includes('className="free-forever-section__art"') &&
       app.includes('className="figma-section__frame free-forever-section__inner"') &&
       app.includes('className="free-forever-section__desktop-content"') &&
@@ -521,7 +520,7 @@ const checks = [
   {
     name: 'free forever mobile fallback uses reference payment and RemoteRecruit marks',
     pass:
-      app.includes("remoteRecruitMarkSrc from './assets/logo_base.svg'") &&
+      app.includes("remoteRecruitMarkSrc from './assets/optimized/logo_base.webp'") &&
       app.includes('function PaypalMark()') &&
       app.includes('className="payment-card__logo"') &&
       app.includes('src={remoteRecruitMarkSrc}') &&
@@ -552,8 +551,7 @@ const checks = [
       app.includes('IOS Development') &&
       app.includes('+12') &&
       app.includes("bestDeveloperArtSrc from './assets/optimized/best_developer_ever_right_node.webp'") &&
-      !app.includes("bestDeveloperArtSrc from './screens_svg/04_custom_profiles_best_developer_ever/best_developer_ever_right_node.svg'") &&
-      !app.includes("customProfileCopySrc from './screens_svg/04_custom_profiles_best_developer_ever/custom_profile_show_case_talent_left_node.svg'") &&
+      !app.includes('customProfileCopySrc') &&
       !app.includes('function CustomProfileVisual') &&
       css.includes('.custom-profile-copy') &&
       css.includes('.custom-profile-art') &&
@@ -905,7 +903,7 @@ const checks = [
   {
     name: 'desktop header uses the reference artboard gutters and navbar artwork',
     pass:
-      app.includes("brandNameSrc from './screens_svg/brand_name.svg'") &&
+      app.includes("brandNameSrc from './assets/optimized/brand_name.webp'") &&
       app.includes('className="brand-art"') &&
       css.includes('width: calc(100% - 102px);') &&
       css.includes('padding: 29px 0 0;') &&

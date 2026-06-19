@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import brandNameSrc from './screens_svg/brand_name.svg'
-import headerBackgroundSrc from './screens_svg/01_header/01_header_background.svg'
+import brandNameSrc from './assets/optimized/brand_name.webp'
+import headerBackgroundSrc from './assets/optimized/01_header_background.webp'
 import GlobalReachSection from './components/GlobalReachSection'
 import FreeForeverSection from './components/FreeForeverSection'
 import CustomProfileSection from './components/CustomProfileSection'
