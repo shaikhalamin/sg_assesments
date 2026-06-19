@@ -1,25 +1,25 @@
 import candidateAvatarSrc from '../assets/optimized/candidate-avatar-gru.webp'
 
 export const socialLinks = [
-  { label: 'Facebook', icon: 'facebook', href: '#page-top', className: 'footer-social-hit footer-social-hit--facebook' },
-  { label: 'Instagram', icon: 'instagram', href: '#page-top', className: 'footer-social-hit footer-social-hit--instagram' },
-  { label: 'X', icon: 'x', href: '#page-top', className: 'footer-social-hit footer-social-hit--x' },
-  { label: 'Twitter', icon: 'twitter', href: '#page-top', className: 'footer-social-hit footer-social-hit--twitter' },
-  { label: 'LinkedIn', icon: 'linkedin', href: '#page-top', className: 'footer-social-hit footer-social-hit--linkedin' },
-  { label: 'Snapchat', icon: 'snapchat', href: '#page-top', className: 'footer-social-hit footer-social-hit--snapchat' },
+  { label: 'Facebook', icon: 'facebook', href: '#page-top', className: 'left-[68.06%]' },
+  { label: 'Instagram', icon: 'instagram', href: '#page-top', className: 'left-[70.97%]' },
+  { label: 'X', icon: 'x', href: '#page-top', className: 'left-[73.89%]' },
+  { label: 'Twitter', icon: 'twitter', href: '#page-top', className: 'left-[76.81%]' },
+  { label: 'LinkedIn', icon: 'linkedin', href: '#page-top', className: 'left-[79.72%]' },
+  { label: 'Snapchat', icon: 'snapchat', href: '#page-top', className: 'left-[82.64%]' },
 ] as const
 
 export type SocialIconName = (typeof socialLinks)[number]['icon']
 
 export const globalReachCards = [
   {
-    className: 'global-reach-card--python',
+    className: 'top-[44.70%] left-[3.43%]',
     role: 'Python Developer',
     name: 'Felonious Gru',
     avatarSrc: candidateAvatarSrc,
   },
   {
-    className: 'global-reach-card--frontend',
+    className: 'top-[61.44%] left-[18.92%]',
     role: 'Front End Wizard',
     name: 'Mel Muselphiem',
     avatarSrc: candidateAvatarSrc,

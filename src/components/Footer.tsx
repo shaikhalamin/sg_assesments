@@ -1,15 +1,25 @@
+import { cn } from '@/lib/utils'
 import brandNameSrc from '../assets/optimized/brand_name.webp'
 import footerArtSrc from '../assets/optimized/footer_full_node.webp'
 import { pricingPlans, socialLinks, type SocialIconName } from './landingData'
 import PricingCard from './PricingCard'
 import { SectionReveal } from './shared'
+import { figmaArt, figmaSection, rrFont } from './styles'
 
 function FooterPricingLayer() {
   return (
-    <section className="footer-pricing-layer" id="pricing" aria-labelledby="pricing-title">
-      <SectionReveal className="pricing-inner">
-        <h2 id="pricing-title">Help Is One Click Away</h2>
-        <div className="pricing-card-grid">
+    <section className="relative z-[2] overflow-visible pt-[54px] max-[1025px]:pt-[38px]" id="pricing" aria-labelledby="pricing-title">
+      <SectionReveal className="relative z-[3] mx-auto w-[min(1040px,calc(100%_-_48px))] text-center max-[720px]:w-[calc(100%_-_24px)]">
+        <h2
+          id="pricing-title"
+          className={cn(
+            rrFont,
+            'm-0 flex items-center justify-center text-center text-[40px] font-semibold leading-[52px] tracking-normal text-[#11142D] [overflow-wrap:break-word] [text-wrap:balance] max-[720px]:mx-auto max-[720px]:w-[min(320px,100%)]',
+          )}
+        >
+          Help Is One Click Away
+        </h2>
+        <div className="mt-7 grid grid-cols-2 gap-[34px] max-[1025px]:gap-2.5 max-[720px]:mt-[22px] max-[720px]:grid-cols-1 max-[720px]:gap-[18px]">
           {pricingPlans.map((plan) => (
             <PricingCard plan={plan} key={plan.id} />
           ))}
@@ -21,7 +31,7 @@ function FooterPricingLayer() {
 
 function SocialIcon({ icon }: { icon: SocialIconName }) {
   return (
-    <svg className="footer-social-hit__icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <svg className="block size-full overflow-visible [&_path]:fill-current" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
       {icon === 'facebook' && (
         <path
           fillRule="evenodd"
@@ -66,10 +76,13 @@ function SocialIcon({ icon }: { icon: SocialIconName }) {
 
 export default function Footer() {
   return (
-    <footer className="figma-section figma-section--footer site-footer" aria-label="RemoteRecruit footer">
-      <div className="figma-section__frame footer-frame">
+    <footer
+      className={cn(figmaSection, 'mt-0 overflow-hidden [--section-width:1440px] [--section-ratio:1440/569]')}
+      aria-label="RemoteRecruit footer"
+    >
+      <div className="relative mx-auto aspect-[1440/760] w-full max-w-none max-[1025px]:min-h-[350px] max-[1025px]:aspect-auto">
         <img
-          className="figma-section__art"
+          className={cn(figmaArt, 'top-[25.1316%] bottom-0 h-[74.8684%] object-fill max-[1025px]:hidden')}
           src={footerArtSrc}
           width="1440"
           height="569"
@@ -80,15 +93,29 @@ export default function Footer() {
           fetchPriority="low"
         />
         <FooterPricingLayer />
-        <nav className="footer-social-links" aria-label="Social links">
+        <nav
+          className="absolute inset-0 z-[2] pointer-events-none max-[1025px]:inset-auto max-[1025px]:right-0 max-[1025px]:bottom-[86px] max-[1025px]:left-0 max-[1025px]:flex max-[1025px]:justify-center max-[1025px]:gap-2.5 max-[1025px]:pointer-events-auto"
+          aria-label="Social links"
+        >
           {socialLinks.map((link) => (
-            <a className={link.className} href={link.href} aria-label={`RemoteRecruit ${link.label}`} key={link.label}>
+            <a
+              className={cn(
+                'absolute top-[68.03%] inline-flex h-[4.22%] w-[2.23%] items-center justify-center rounded-full text-[#dfe1f2] pointer-events-auto max-[1025px]:static max-[1025px]:size-8 max-[1025px]:bg-[rgba(255,255,255,0.16)]',
+                link.className,
+              )}
+              href={link.href}
+              aria-label={`RemoteRecruit ${link.label}`}
+              key={link.label}
+            >
               <SocialIcon icon={link.icon} />
             </a>
           ))}
         </nav>
-        <div className="footer-mobile-content" aria-hidden="true">
-          <img src={brandNameSrc} width="124" height="50" alt="" loading="lazy" decoding="async" />
+        <div
+          className="relative z-[1] hidden min-h-[350px] items-center justify-center bg-[radial-gradient(circle_at_86%_32%,rgba(255,255,255,0.08)_0_24%,transparent_25%),linear-gradient(135deg,#336da6_0%,#244f90_100%)] max-[1025px]:flex"
+          aria-hidden="true"
+        >
+          <img className="h-auto w-[124px]" src={brandNameSrc} width="124" height="50" alt="" loading="lazy" decoding="async" />
         </div>
       </div>
     </footer>
