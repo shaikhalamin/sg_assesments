@@ -115,11 +115,9 @@ export default function GlobalReachSection() {
         <div className={cn(rrFont, 'relative mx-auto w-[min(100%,360px)] select-text text-[#11142d]')}>
           <img
             className="relative z-[1] block h-auto w-full pointer-events-none select-none"
-            src={globalReachVisualSrc}
-            srcSet={`${globalReachVisualMobileSrc} 620w, ${globalReachVisualSrc} 1665w`}
-            sizes="(max-width: 720px) min(100vw - 24px, 360px), 555px"
-            width="1665"
-            height="1953"
+            src={globalReachVisualMobileSrc}
+            width="620"
+            height="727"
             alt=""
             aria-hidden="true"
             loading="lazy"

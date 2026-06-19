@@ -4,9 +4,6 @@ import type {
   PointerEvent as ReactPointerEvent,
   SyntheticEvent,
 } from 'react'
-import { animate } from 'animejs'
-
-type AnimeAnimation = ReturnType<typeof animate>
 
 type HoverMotionOptions = {
   disabled?: boolean
@@ -15,6 +12,8 @@ type HoverMotionOptions = {
   duration?: number
   restDuration?: number
 }
+
+const motionEase = 'cubic-bezier(0.33, 1, 0.68, 1)'
 
 export function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -33,25 +32,20 @@ export function composeEventHandlers<Event extends SyntheticEvent>(
   }
 }
 
-function isElementInViewport(element: HTMLElement) {
-  const rect = element.getBoundingClientRect()
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight
-
-  return rect.top < viewportHeight && rect.bottom > 0
+function revealElement(element: HTMLElement) {
+  element.dataset.revealed = 'true'
+  element.style.opacity = '1'
+  element.style.setProperty('translate', '0 0')
+  element.style.willChange = 'auto'
 }
 
 function revealWithoutMotion(element: HTMLElement) {
-  element.dataset.revealed = 'true'
-  element.style.opacity = '1'
+  revealElement(element)
   element.style.transform = 'none'
-  element.style.willChange = 'auto'
 }
 
 export function useSectionReveal<T extends HTMLElement>() {
   const elementRef = useRef<T | null>(null)
-  const animationRef = useRef<AnimeAnimation | null>(null)
-  const hasRevealedRef = useRef(false)
-  const hasCompletedRevealRef = useRef(false)
 
   useEffect(() => {
     const element = elementRef.current
@@ -65,47 +59,15 @@ export function useSectionReveal<T extends HTMLElement>() {
       return undefined
     }
 
-    const reveal = () => {
-      if (hasRevealedRef.current) {
-        return
-      }
-
-      hasRevealedRef.current = true
-      hasCompletedRevealRef.current = false
-      element.dataset.revealed = 'true'
-      element.style.willChange = 'opacity, transform'
-      animationRef.current?.cancel()
-      animationRef.current = animate(element, {
-        opacity: { from: 0, to: 1 },
-        y: { from: 28, to: 0 },
-        duration: 720,
-        ease: 'outCubic',
-        onComplete: () => {
-          hasCompletedRevealRef.current = true
-          element.style.willChange = 'auto'
-        },
-      })
-    }
-
-    const cancelAnimation = () => {
-      animationRef.current?.cancel()
-      animationRef.current = null
-
-      if (!hasCompletedRevealRef.current) {
-        hasRevealedRef.current = false
-      }
-    }
-
-    if (!('IntersectionObserver' in window) || isElementInViewport(element)) {
-      reveal()
-
-      return cancelAnimation
+    if (!('IntersectionObserver' in window)) {
+      revealElement(element)
+      return undefined
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
-          reveal()
+          revealElement(element)
           observer.disconnect()
         }
       },
@@ -120,7 +82,6 @@ export function useSectionReveal<T extends HTMLElement>() {
 
     return () => {
       observer.disconnect()
-      cancelAnimation()
     }
   }, [])
 
@@ -134,27 +95,13 @@ export function useAnimeHoverMotion<T extends HTMLElement>({
   duration = 180,
   restDuration = 220,
 }: HoverMotionOptions = {}) {
-  const animationRef = useRef<AnimeAnimation | null>(null)
-
-  useEffect(() => {
-    return () => {
-      animationRef.current?.cancel()
-      animationRef.current = null
-    }
-  }, [])
-
   const animateTarget = (target: T, y: number, activeScale: number, animationDuration: number) => {
     if (disabled || prefersReducedMotion()) {
       return
     }
 
-    animationRef.current?.cancel()
-    animationRef.current = animate(target, {
-      y,
-      scale: activeScale,
-      duration: animationDuration,
-      ease: 'outCubic',
-    })
+    target.style.transition = `transform ${animationDuration}ms ${motionEase}`
+    target.style.transform = `translateY(${y}px) scale(${activeScale})`
   }
 
   return {
