@@ -80,7 +80,7 @@ export default function ReadySection() {
             variant="ghost"
             className={cn(
               focusRing,
-              'relative mt-[29px] inline-flex h-auto min-h-[61px] w-[180px] justify-start items-center rounded-full border-0 bg-[rgba(82,180,218,0.16)] py-0 pr-[22px] pl-2.5 text-[#1e3e85] select-text transition-[transform,background-color] duration-[180ms] hover:-translate-y-0.5 hover:bg-[rgba(82,180,218,0.23)] hover:text-[#1e3e85] max-[980px]:min-h-[58px] max-[980px]:w-[170px] max-[720px]:mt-6 max-[720px]:w-44',
+              'relative mt-[29px] inline-flex h-auto min-h-[61px] w-[180px] justify-start items-center rounded-full border-0 bg-[rgba(82,180,218,0.16)] py-0 pr-[22px] pl-2.5 text-[#1e3e85] select-text transition-[background-color] duration-[180ms] hover:bg-[rgba(82,180,218,0.23)] hover:text-[#1e3e85] max-[980px]:min-h-[58px] max-[980px]:w-[170px] max-[720px]:mt-6 max-[720px]:w-44',
             )}
             onClick={() => scrollToId('pricing')}
             aria-label="Get started"

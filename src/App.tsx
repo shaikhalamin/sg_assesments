@@ -10,12 +10,13 @@ import ReadySection from './components/ReadySection'
 import QuestionsSection from './components/QuestionsSection'
 import Footer from './components/Footer'
 import { scrollToId } from './components/navigation'
+import { AnimatedAnchor } from './components/shared'
 import { focusRing, rrFont } from './components/styles'
 
 const headerButtonClass = cn(
   rrFont,
   focusRing,
-  'h-11 min-h-11 rounded-full border-0 p-0 text-center text-sm font-semibold leading-[18px] tracking-[0.4px] text-[#F5F7FE] shadow-none transition-[transform,box-shadow,background-color,color] duration-[180ms] hover:-translate-y-0.5 hover:bg-transparent hover:text-[#F5F7FE] max-[720px]:min-h-[38px]',
+  'h-11 min-h-11 rounded-full border-0 p-0 text-center text-sm font-semibold leading-[18px] tracking-[0.4px] text-[#F5F7FE] shadow-none transition-[box-shadow,background-color,color] duration-[180ms] hover:bg-transparent hover:text-[#F5F7FE] max-[720px]:min-h-[38px]',
 )
 
 function Header() {
@@ -24,7 +25,7 @@ function Header() {
       className="relative z-[2] mx-auto flex w-[calc(100%_-_102px)] items-center justify-between pt-[29px] max-[980px]:w-[min(calc(100%_-_40px),920px)] max-[720px]:w-[calc(100%_-_32px)] max-[720px]:pt-[22px]"
       aria-label="RemoteRecruit navigation"
     >
-      <a
+      <AnimatedAnchor
         className={cn(focusRing, 'inline-flex h-[50px] w-[124px] flex-[0_0_124px] items-center text-white no-underline max-[720px]:h-10 max-[720px]:w-[100px] max-[720px]:flex-[0_0_100px]')}
         href="#page-top"
         onClick={(event) => event.preventDefault()}
@@ -39,7 +40,7 @@ function Header() {
           loading="eager"
           decoding="sync"
         />
-      </a>
+      </AnimatedAnchor>
       <nav className="flex items-center gap-9 max-[720px]:gap-1" aria-label="Account actions">
         <Button
           type="button"
@@ -110,8 +111,8 @@ function ScrollToTopButton({ visible }: { visible: boolean }) {
       size="icon"
       className={cn(
         focusRing,
-        'fixed right-6 bottom-6 z-10 grid size-10 rounded-full border-0 bg-[#244f90] text-white opacity-0 shadow-[0_16px_32px_rgba(30,62,133,0.24)] transition-[opacity,transform] duration-[180ms] pointer-events-none translate-y-[14px] hover:bg-[#244f90] max-[720px]:right-4 max-[720px]:bottom-4',
-        visible && 'opacity-100 pointer-events-auto translate-y-0',
+        'fixed right-6 bottom-6 z-10 grid size-10 rounded-full border-0 bg-[#244f90] text-white opacity-0 shadow-[0_16px_32px_rgba(30,62,133,0.24)] transition-opacity duration-[180ms] pointer-events-none hover:bg-[#244f90] max-[720px]:right-4 max-[720px]:bottom-4',
+        visible && 'opacity-100 pointer-events-auto',
       )}
       onClick={() => scrollToId('page-top')}
       aria-label="Scroll to top"

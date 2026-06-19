@@ -98,7 +98,7 @@ export default function GlobalReachSection() {
           ))}
         </div>
       </SectionReveal>
-      <div className="mx-auto hidden w-[min(310px,100%)] gap-[26px] max-[720px]:grid">
+      <SectionReveal className="mx-auto hidden w-[min(310px,100%)] gap-[26px] max-[720px]:grid">
         <article className={cn(rrFont, 'min-w-0 max-w-full [overflow-wrap:anywhere]')}>
           <span className={cn(blueLabel, 'h-[39px] w-[137px] rounded-[18px] p-0 text-xs font-semibold leading-[15px] tracking-[0.4px]')}>
             Global Reach
@@ -130,7 +130,7 @@ export default function GlobalReachSection() {
             <GlobalReachCard {...card} key={card.role} />
           ))}
         </div>
-      </div>
+      </SectionReveal>
     </section>
   )
 }

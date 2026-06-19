@@ -3,7 +3,7 @@ import brandNameSrc from '../assets/optimized/brand_name.webp'
 import footerArtSrc from '../assets/optimized/footer_full_node.webp'
 import { pricingPlans, socialLinks, type SocialIconName } from './landingData'
 import PricingCard from './PricingCard'
-import { SectionReveal } from './shared'
+import { AnimatedAnchor, SectionReveal } from './shared'
 import { figmaArt, figmaSection, rrFont } from './styles'
 
 function FooterPricingLayer() {
@@ -98,7 +98,7 @@ export default function Footer() {
           aria-label="Social links"
         >
           {socialLinks.map((link) => (
-            <a
+            <AnimatedAnchor
               className={cn(
                 'absolute top-[68.03%] inline-flex h-[4.22%] w-[2.23%] items-center justify-center rounded-full text-[#dfe1f2] pointer-events-auto max-[1025px]:static max-[1025px]:size-8 max-[1025px]:bg-[rgba(255,255,255,0.16)]',
                 link.className,
@@ -108,7 +108,7 @@ export default function Footer() {
               key={link.label}
             >
               <SocialIcon icon={link.icon} />
-            </a>
+            </AnimatedAnchor>
           ))}
         </nav>
         <div

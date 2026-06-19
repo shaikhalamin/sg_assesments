@@ -1,12 +1,35 @@
-import type { ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import { composeEventHandlers, useAnimeHoverMotion, useSectionReveal } from './animation'
 import { sectionReveal } from './styles'
 
 export function SectionReveal({ children, className = '' }: { children: ReactNode; className?: string }) {
+  const revealRef = useSectionReveal<HTMLDivElement>()
+
   return (
-    <div className={cn(sectionReveal, className)}>
+    <div ref={revealRef} data-section-reveal="" className={cn(sectionReveal, className)}>
       {children}
     </div>
+  )
+}
+
+export function AnimatedAnchor({
+  onBlur,
+  onFocus,
+  onPointerEnter,
+  onPointerLeave,
+  ...props
+}: ComponentPropsWithoutRef<'a'>) {
+  const motionHandlers = useAnimeHoverMotion<HTMLAnchorElement>()
+
+  return (
+    <a
+      {...props}
+      onPointerEnter={composeEventHandlers(onPointerEnter, motionHandlers.onPointerEnter)}
+      onPointerLeave={composeEventHandlers(onPointerLeave, motionHandlers.onPointerLeave)}
+      onFocus={composeEventHandlers(onFocus, motionHandlers.onFocus)}
+      onBlur={composeEventHandlers(onBlur, motionHandlers.onBlur)}
+    />
   )
 }
 
