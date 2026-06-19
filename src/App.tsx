@@ -75,7 +75,9 @@ function HeroSection() {
         height="704"
         alt=""
         aria-hidden="true"
+        loading="eager"
         decoding="sync"
+        fetchPriority="high"
       />
       <Header />
       <div
