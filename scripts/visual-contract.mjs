@@ -18,6 +18,14 @@ function readComponentSourceFiles(dir) {
 }
 
 const appEntry = readFileSync('src/App.tsx', 'utf8')
+const mainEntry = readFileSync('src/main.tsx', 'utf8')
+const viteConfig = readFileSync('vite.config.ts', 'utf8')
+const rootRouteSource = existsSync('src/routes/__root.tsx')
+  ? readFileSync('src/routes/__root.tsx', 'utf8')
+  : ''
+const indexRouteSource = existsSync('src/routes/index.tsx')
+  ? readFileSync('src/routes/index.tsx', 'utf8')
+  : ''
 const componentFiles = readComponentSourceFiles('src/components')
 const componentSource = componentFiles.map((file) => readFileSync(file, 'utf8')).join('\n')
 const app = [appEntry, componentSource]
@@ -992,6 +1000,23 @@ const checks = [
   {
     name: 'global typography baseline keeps the Figma font family available',
     pass: !hasRemoteFontReference && css.includes('font-family: Poppins, Inter, ui-sans-serif'),
+  },
+  {
+    name: 'app uses TanStack Router file routing with automatic code splitting',
+    pass:
+      viteConfig.includes("from '@tanstack/router-plugin/vite'") &&
+      viteConfig.includes('tanstackRouter({') &&
+      viteConfig.includes("target: 'react'") &&
+      viteConfig.includes('autoCodeSplitting: true') &&
+      viteConfig.indexOf('tanstackRouter({') < viteConfig.indexOf('react()') &&
+      mainEntry.includes("from '@tanstack/react-router'") &&
+      mainEntry.includes("from './routeTree.gen'") &&
+      mainEntry.includes('createRouter({') &&
+      mainEntry.includes('<RouterProvider router={router} />') &&
+      rootRouteSource.includes('createRootRoute') &&
+      rootRouteSource.includes('<Outlet />') &&
+      indexRouteSource.includes("createFileRoute('/')") &&
+      indexRouteSource.includes('<App />'),
   },
 ]
 
