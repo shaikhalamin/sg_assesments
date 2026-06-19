@@ -1,76 +1,109 @@
-# React + TypeScript + Vite
+# RemoteRecruit - Home Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Responsive React implementation of the RemoteRecruit assessment landing page based on the provided Figma design. The page recreates the RemoteRecruit home/features experience with a desktop and mobile layout, reusable React components, Tailwind CSS styling, optimized image assets, section reveal animations, hover transitions, and scroll-to-top behavior.
 
-Currently, two official plugins are available:
+## Links
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Live site: https://jade-nasturtium-320737.netlify.app/
+- GitHub repository: https://github.com/shaikhalamin/sg_assesments
 
-## React Compiler
+## Features
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Responsive desktop, tablet, and mobile layouts
+- Figma-matched hero, feature, pricing, FAQ, CTA, and footer sections
+- Component-based structure for sections, cards, buttons, navigation, and shared UI
+- Smooth section reveal animations with reduced-motion support
+- Interactive hover/focus transitions for buttons, cards, and links
+- Scroll-to-top button
+- Optimized WebP image assets with lazy loading where appropriate
+- Accessibility-minded markup, labels, focus states, and semantic sections
 
-Note: This will impact Vite dev & build performances.
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- TanStack Router
+- shadcn/ui button primitives
+- anime.js for UI motion
+- Netlify deployment
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js 20 or later
+- npm
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Run Locally
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
-# sg_assesments
+
+The Vite development server will print the local URL, usually:
+
+```bash
+http://localhost:5173/
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## Deployment
+
+The project is deployed on Netlify. The current production build is available at:
+
+https://jade-nasturtium-320737.netlify.app/
+
+Netlify uses the following build configuration:
+
+```bash
+npm run build
+```
+
+Publish directory:
+
+```bash
+dist
+```
+
+## Project Structure
+
+```text
+src/
+  assets/              Optimized image assets
+  components/          Reusable page sections and UI components
+  components/ui/       Shared UI primitives
+  routes/              TanStack Router route files
+  App.tsx              Page composition
+  index.css            Tailwind imports and global styles
+```
+
+## Known Issues and Limitations
+
+- Authentication, sign-up, social links, and pricing actions are visual/demo interactions only.
+- FAQ and profile data use mock content as requested for the assessment.
+- The implementation focuses on the supplied page scope and does not include backend integration.
